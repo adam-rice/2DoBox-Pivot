@@ -38,24 +38,29 @@ var ideaBoss = {
   add: function() {
     this.ideaArray.push(new Idea(titleInput.value, bodyInput.value));
     store();
-  }
+  },
 
-  find:
+  find: function(id) {
+    id = parseInt(id);
+    return this.ideaArray.find( function(idea) {
+      return idea.id !== id;
+    });
+  },
 
   render: function () {
     ideaSection.html(this.ideaArray.map( function(idea) {
       return idea.toHTML();
       })
     );
-  }
+  },
 
   store: function() {
     localStorage.setItem('idea', JSON.stringify(this.idea));
     render();
-  }
+  },
 
   retrieve:
-}
+};
 
 Idea.prototype.toHTML = function() {
   return (`
