@@ -41,9 +41,34 @@ var ideaBoss = function () {
 
   find:
 
-  render:
+  render: function () {
+    ideaSection.html(this.ideaArray.map( function(idea) {
+      return idea.toHTML();
+      })
+    );
+  }
 
   store:
 
   retrieve:
 }
+
+Idea.prototype.toHTML = function() {
+  return (`
+    <li class="idea-card">
+      <header>
+        <h3>${titleInput.val()}</h3>
+        <button class="remove-button"><img src="Images/delete-hover.svg"/></button>
+      </header>
+      <p class="body">${bodyInput.val()}</p>
+      <footer>
+        <button class="upvote"><img src="Images/upvote-hover.svg"/></button>
+        <button class="downvote"><img src="Images/downvote-hover.svg"/></button>
+        <p class="quality">quality:<span>swill</span></p>
+      </footer>
+    </li>
+    `);
+}
+
+ideaBoss.retrieve();
+ideaBoss.render();
