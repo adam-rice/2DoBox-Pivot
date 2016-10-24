@@ -37,6 +37,7 @@ var ideaBoss = {
   ideaArray: [],
   add: function() {
     this.ideaArray.push(new Idea(titleInput.value, bodyInput.value));
+    store();
   }
 
   find:
@@ -48,7 +49,10 @@ var ideaBoss = {
     );
   }
 
-  store:
+  store: function() {
+    localStorage.setItem('idea', JSON.stringify(this.idea));
+    render();
+  }
 
   retrieve:
 }
