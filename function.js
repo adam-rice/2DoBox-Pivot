@@ -33,11 +33,11 @@ Idea.prototype.remove = function(id) {
 
 };
 
-var ideaBoss = function () {
-
-  ideaArray = [];
-
-  add:
+var ideaBoss = {
+  ideaArray: [],
+  add: function() {
+    this.ideaArray.push(new Idea(titleInput.value, bodyInput.value));
+  }
 
   find:
 
