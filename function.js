@@ -9,25 +9,17 @@ saveButton.on('click', function () {
     <li class="idea-card">
       <header>
         <h3>${titleInput.val()}</h3>
-        <button class="remove-button"><img src="delete-hover.svg"/></button>
+        <button class="remove-button"><img src="Images/delete-hover.svg"/></button>
       </header>
       <p class="body">${bodyInput.val()}</p>
       <footer>
-        <button class="upvote"><img src="upvote-hover.svg"/></button>
-        <button class="downvote"><img src="downvote-hover.svg"/></button>
+        <button class="upvote"><img src="Images/upvote-hover.svg"/></button>
+        <button class="downvote"><img src="Images/downvote-hover.svg"/></button>
         <p class="quality">quality:<span>swill</span></p>
       </footer>
     </li>
     `);
 });
-
-
-
-
-
-
-
-
 
 function Idea(title, body, quality, id) {
   this.title = title;
@@ -35,3 +27,64 @@ function Idea(title, body, quality, id) {
   this.quality = quality || "swill";
   this.id = id || Date.now();
 }
+
+Idea.prototype.remove = function(id) {
+  id = parseInt(id);
+
+};
+
+var ideaBoss = {
+  ideaArray: [],
+  add: function() {
+    this.ideaArray.push(new Idea(titleInput.value, bodyInput.value));
+    store();
+  },
+
+  find: function(id) {
+    id = parseInt(id);
+    return this.ideaArray.find( function(idea) {
+      return idea.id !== id;
+    });
+  },
+
+  render: function () {
+    ideaSection.html(this.ideaArray.map( function(idea) {
+      return idea.toHTML();
+      })
+    );
+  },
+
+  store: function() {
+    localStorage.setItem('idea', JSON.stringify(this.idea));
+    render();
+  },
+
+  retrieve: function() {
+    var retrievedIdeas = JSON.parse(localStorage.getItem('idea'));
+    if (retrievedIdeas) {
+      this.idea = retrievedIdeas.map(function(idea) {
+        return new Idea(idea.title, idea.body, idea.quality, idea.id);
+      });
+    }
+  }
+};
+
+Idea.prototype.toHTML = function() {
+  return (`
+    <li class="idea-card">
+      <header>
+        <h3>${titleInput.val()}</h3>
+        <button class="remove-button"><img src="Images/delete-hover.svg"/></button>
+      </header>
+      <p class="body">${bodyInput.val()}</p>
+      <footer>
+        <button class="upvote"><img src="Images/upvote-hover.svg"/></button>
+        <button class="downvote"><img src="Images/downvote-hover.svg"/></button>
+        <p class="quality">quality:<span>swill</span></p>
+      </footer>
+    </li>
+    `);
+}
+
+ideaBoss.retrieve();
+ideaBoss.render();
