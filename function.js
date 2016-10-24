@@ -59,7 +59,14 @@ var ideaBoss = {
     render();
   },
 
-  retrieve:
+  retrieve: function() {
+    var retrievedIdeas = JSON.parse(localStorage.getItem('idea'));
+    if (retrievedIdeas) {
+      this.idea = retrievedIdeas.map(function(idea) {
+        return new Idea(idea.title, idea.body, idea.quality, idea.id);
+      });
+    }
+  }
 };
 
 Idea.prototype.toHTML = function() {
