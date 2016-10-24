@@ -9,29 +9,41 @@ saveButton.on('click', function () {
     <li class="idea-card">
       <header>
         <h3>${titleInput.val()}</h3>
-        <button class="remove-button"><img src="delete-hover.svg"/></button>
+        <button class="remove-button"><img src="Images/delete-hover.svg"/></button>
       </header>
       <p class="body">${bodyInput.val()}</p>
       <footer>
-        <button class="upvote"><img src="upvote-hover.svg"/></button>
-        <button class="downvote"><img src="downvote-hover.svg"/></button>
+        <button class="upvote"><img src="Images/upvote-hover.svg"/></button>
+        <button class="downvote"><img src="Images/downvote-hover.svg"/></button>
         <p class="quality">quality:<span>swill</span></p>
       </footer>
     </li>
     `);
 });
 
-
-
-
-
-
-
-
-
 function Idea(title, body, quality, id) {
   this.title = title;
   this.body = body;
   this.quality = quality || "swill";
   this.id = id || Date.now();
+}
+
+Idea.prototype.remove = function(id) {
+  id = parseInt(id);
+
+};
+
+var ideaBoss = function () {
+
+  ideaArray = [];
+
+  add:
+
+  find:
+
+  render:
+
+  store:
+
+  retrieve:
 }

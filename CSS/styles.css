@@ -58,3 +58,7 @@ input {
   cursor: pointer;
   background-color: #045E55;
 }
+
+.idea-card {
+  border-bottom: 2px solid #6E6D71;
+}
