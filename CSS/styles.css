@@ -92,6 +92,7 @@ input {
 .card-header {
   display: inline-block;
   width: 50%;
+  color: #6D6E71;
 }
 
 h3 {

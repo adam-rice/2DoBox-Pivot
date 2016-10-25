@@ -7,16 +7,15 @@ var ideaSection = $('#ideaSection');
 saveButton.on('click', function () {
   ideaSection.prepend(`
     <li class="idea-card">
-      <header>
-        <h3>${titleInput.val()}</h3>
-        <button class="remove-button"><img src="Images/delete-hover.svg"/></button>
+      <header class="card-header">
+        <h3>${titleInput.val()}
+        <button type="image" class="destroy-button"></button>
+        </h3>
       </header>
       <p class="body">${bodyInput.val()}</p>
-      <footer>
-        <button class="upvote"><img src="Images/upvote-hover.svg"/></button>
-        <button class="downvote"><img src="Images/downvote-hover.svg"/></button>
+        <button type="image" class="upvote"></button>
+        <button type="image" class="downvote"></button>
         <p class="quality">quality:<span>swill</span></p>
-      </footer>
     </li>
     `);
 });
@@ -74,12 +73,12 @@ Idea.prototype.toHTML = function() {
     <li class="idea-card">
       <header class="card-header">
         <h3>${titleInput.val()}</h3>
-        <button class="remove-button"><img src="Images/delete-hover.svg"/></button>
+        <button class="destroy-button"></button>
       </header>
       <p class="body">${bodyInput.val()}</p>
       <footer>
-        <button class="upvote"><img src="Images/upvote-hover.svg"/></button>
-        <button class="downvote"><img src="Images/downvote-hover.svg"/></button>
+        <button class="upvote"></button>
+        <button class="downvote"></button>
         <p class="quality">quality:<span>swill</span></p>
       </footer>
     </li>
