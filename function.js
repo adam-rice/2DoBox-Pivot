@@ -6,22 +6,22 @@ var ideaSection = $('#ideaSection');
 
 $(document).ready (function() {
 
-  saveButton.on('click', function () {
-    ideaSection.prepend(`
-      <li class="idea-card">
-        <header>
-          <h3>${titleInput.val()}</h3>
-          <button class="remove-button"><img src="Images/delete-hover.svg"/></button>
-        </header>
-        <p class="body">${bodyInput.val()}</p>
-        <footer>
-          <button class="upvote"><img src="Images/upvote-hover.svg"/></button>
-          <button class="downvote"><img src="Images/downvote-hover.svg"/></button>
-          <p class="quality">quality:<span>swill</span></p>
-        </footer>
-      </li>
-    `);
-  });
+  // saveButton.on('click', function () {
+  //   ideaSection.prepend(`
+  //     <li class="idea-card">
+  //       <header>
+  //         <h3>${titleInput.val()}</h3>
+  //         <button class="remove-button"><img src="Images/delete-hover.svg"/></button>
+  //       </header>
+  //       <p class="body">${bodyInput.val()}</p>
+  //       <footer>
+  //         <button class="upvote"><img src="Images/upvote-hover.svg"/></button>
+  //         <button class="downvote"><img src="Images/downvote-hover.svg"/></button>
+  //         <p class="quality">quality:<span>swill</span></p>
+  //       </footer>
+  //     </li>
+  //   `);
+  // });
 
   function Idea(title, body, quality, id) {
     this.title = title;
@@ -32,12 +32,12 @@ $(document).ready (function() {
 
   Idea.prototype.toHTML = function() {
     return (`
-      <li class="idea-card">
+      <li class="idea-card" id=${this.id}>
       <header>
-      <h3>${titleInput.val()}</h3>
+      <h3>${this.title}</h3>
       <button class="remove-button"><img src="Images/delete-hover.svg"/></button>
       </header>
-      <p class="body">${bodyInput.val()}</p>
+      <p class="body">${this.body}</p>
       <footer>
       <button class="upvote"><img src="Images/upvote-hover.svg"/></button>
       <button class="downvote"><img src="Images/downvote-hover.svg"/></button>
@@ -48,21 +48,21 @@ $(document).ready (function() {
     };
 
   Idea.prototype.remove = function(id) {
-    id = parseInt(id);
+    // id = parseInt(id);
     ideaBoss.remove(this.id);
   };
 
   var ideaBoss = {
     ideaArray: [],
     add: function (title, body) {
-      this.ideaArray.push(new Idea(titleInput.val(), bodyInput.val()));
+      this.ideaArray.push(new Idea(title, body));
       this.store();
     },
 
     find: function(id) {
       id = parseInt(id);
       return this.ideaArray.find( function (idea) {
-        return idea.id !== id;
+        return idea.id === id;
       });
     },
 
@@ -84,7 +84,7 @@ $(document).ready (function() {
       if (retrievedIdeas) {
         for (var i = 0; i < retrievedIdeas.length; i++) {
           var idea = retrievedIdeas[i];
-          this.ideaArray.push(new Idea(this.title, this.body, this.quality, this.id));
+          this.ideaArray.push(new Idea(idea.title, idea.body, idea.quality, idea.id));
         }
       }
     },
@@ -97,6 +97,20 @@ $(document).ready (function() {
       this.store();
     }
   };
+
+  function addNewIdeaToIdeaBoss () {
+    ideaBoss.add(titleInput.val(), bodyInput.val());
+  }
+
+  function clearInputFields() {
+    titleInput.val('');
+    bodyInput.val('');
+  }
+
+  saveButton.on('click', function() {
+    addNewIdeaToIdeaBoss();
+    clearInputFields();
+  });
 
   ideaBoss.retrieve();
   ideaBoss.render();
