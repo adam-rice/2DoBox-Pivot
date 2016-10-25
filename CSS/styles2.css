@@ -33,7 +33,7 @@ input, button {
   font-size: 16px;
 }
 
-#titleInput {
+.titleInput {
   height: 30px;
   width: 500px;
   margin: 5px 0;
@@ -41,7 +41,7 @@ input, button {
   outline: none;
 }
 
-#bodyInput {
+.bodyInput {
   height: 30px;
   width: 500px;
   margin: 5px 0;
@@ -51,8 +51,8 @@ input, button {
 
 .save-btn {
   height: 40px;
-  width: 500px;
-  margin: 5px 0 20px;
+  width: 505px;
+  margin: 10px 0 30px;
   order: 4;
   background-color: #00A79D;
   color: #FFFFFF;
@@ -74,8 +74,8 @@ input, button {
 }
 
 .search {
-  height: 30px;
-  width: 500px;
+  height: 40px;
+  width: 505px;
   margin: 30px;
   border: 1px solid #CCCCCC;
   outline: none;
@@ -90,6 +90,7 @@ h3 {
   font-size: 25px;
   color: #6D6E71;
   width: 500px;
+  outline: none;
 }
 
 h4 {
@@ -138,6 +139,7 @@ color: #6D6E71;
   font-size: 18px;
   letter-spacing: .5px;
   color: #939598;
+  outline: none;
 }
 
 .buttons {
@@ -184,12 +186,15 @@ margin-bottom: 10px;
     width: 300px;
   }
 
-  #bodyInput {
+  .titleInput, .bodyInput, .idea-card {
     width: 300px;
+  }
+
+  .bodyInput {
     height: 100px;
   }
 
-  #bodyInput::-webkit-input-placeholder {
+  .bodyInput::webkit-input-placeholder {
     vertical-align: text-top;
 
   }
