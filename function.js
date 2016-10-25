@@ -2,6 +2,7 @@ var titleInput = $('#titleInput');
 var bodyInput = $('#bodyInput');
 var saveButton = $('#saveButton');
 var ideaSection = $('#ideaSection');
+var search = $('#search');
 
 $(document).ready (function() {
   function Idea(title, body, quality, id) {
@@ -131,21 +132,34 @@ $(document).ready (function() {
     } else find.remove();
   });
 
-  ideaSection.on('keyup click', 'h3, p', function(key) {
+  ideaSection.on('keydown click', 'h3, p', function(key) {
     var id = $(this).closest('.idea-card').attr('id');
     // $(this).addClass('changing-innertext');
     if (key.which === 13) {
-      replaceNodeText();
+      if (event.target.nodeName === 'H3') {
+        var newTitle = $(this).closest('h3').text();
+        ideaBoss.find(id).saveNewTitle(newTitle);
+      } else if (event.target.nodeName === 'P') {
+        var newBody = $(this).closest('p').text();
+        ideaBoss.find(id).saveNewBody(newBody);
+      }
     }
   });
 
   ideaSection.on('blur', 'h3, p', function(key) {
     var id = $(this).closest('.idea-card').attr('id');
     // $(this).removeClass('changing-innertext');
-    replaceNodeText();
+    if (event.target.nodeName === 'H3') {
+      var newTitle = $(this).closest('h3').text();
+      ideaBoss.find(id).saveNewTitle(newTitle);
+    } else if (event.target.nodeName === 'P') {
+      var newBody = $(this).closest('p').text();
+      ideaBoss.find(id).saveNewBody(newBody);
+    }
   });
 
   //listener on search for title
+  search.on
 
   //listener on search for body
 
@@ -160,15 +174,16 @@ $(document).ready (function() {
     bodyInput.blur();
   }
 
-  function replaceNodeText() {
-    if (event.target.nodeName === 'H3') {
-      var newTitle = $(this).closest('h3').text();
-      ideaBoss.find(id).saveNewTitle(newTitle);
-    } else if (event.target.nodeName === 'P') {
-      var newBody = $(this).closest('p').text();
-      ideaBoss.find(id).saveNewBody(newBody);
-    }
-  }
+  // on refactor...
+  // function replaceNodeText() {
+  //   if (event.target.nodeName === 'H3') {
+  //     var newTitle = $(this).closest('h3').text();
+  //     ideaBoss.find(id).saveNewTitle(newTitle);
+  //   } else if (event.target.nodeName === 'P') {
+  //     var newBody = $(this).closest('p').text();
+  //     ideaBoss.find(id).saveNewBody(newBody);
+  //   }
+  // }
 
 ideaBoss.retrieve();
 ideaBoss.render();
