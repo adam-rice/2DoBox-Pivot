@@ -183,7 +183,7 @@ $(document).ready (function() {
     var body = bodyInput.val();
     if (title === "" || body === "") {
       saveButton.attr('disabled', true); }
-    else if (title !== "" && url !== "") {
+    else if (title !== "" && body !== "") {
       saveButton.attr('disabled', false);
     }
   }
@@ -196,6 +196,7 @@ $(document).ready (function() {
     titleInput.val('');
     bodyInput.val('');
     bodyInput.blur();
+    saveButton.attr('disabled', true);
   }
 
   // on refactor...
