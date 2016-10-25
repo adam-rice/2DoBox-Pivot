@@ -158,15 +158,17 @@ $(document).ready (function() {
     }
   });
 
-  //listener on search for title
-  search.on("keyup", function () {
+  search.on("keyup", function() {
     var search = $(this).val().trim();
-    $("h3:contains('" + search + "')").closest(".idea-card").show();
-    $("h3:not(:contains('" + search + "'))").closest(".idea-card").hide();
+    $('h3:contains("' + search + '")').closest('.idea-card').show();
+    $('h3:not(:contains("' + search + '"))').closest('.idea-card').hide();
   });
 
-  //listener on search for body
-
+  search.on('keyup', function() {
+    var search = $(this).val().trim();
+    $('p:contains("' + search + '")').closest('.idea-card').show();
+    // $('p:not(:contains("' + search + '"))').closest('.idea-card').hide();
+  });
 
   function addNewIdeaToIdeaBoss() {
     ideaBoss.add(titleInput.val(), bodyInput.val());
