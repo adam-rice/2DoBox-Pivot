@@ -43,6 +43,16 @@ $(document).ready (function() {
     ideaBoss.store();
   };
 
+  Idea.prototype.downvote = function() {
+    var quality = this.quality;
+    if (quality === 'genius') {
+      this.quality = 'plausible';
+    } else if (quality === 'plausible') {
+      this.quality = 'swill';
+    }
+    ideaBoss.store();
+  };
+
   var ideaBoss = {
     ideaArray: [],
     add: function(title, body) {
@@ -89,6 +99,7 @@ $(document).ready (function() {
   }; //end of ideaBoss
 
   saveButton.on('click', function() {
+    // debugger
     addNewIdeaToIdeaBoss();
     clearInputFields();
   });
@@ -103,7 +114,6 @@ $(document).ready (function() {
   ideaSection.on('click', '.destroy-button', function() {
     var id = $(this).closest('.idea-card').attr('id');
     var find = ideaBoss.find(id);
-    debugger
     find.remove();
   });
 
@@ -115,12 +125,6 @@ $(document).ready (function() {
     titleInput.val('');
     bodyInput.val('');
   }
-
-
-
-
-
-
 
   ideaBoss.retrieve();
   ideaBoss.render();
