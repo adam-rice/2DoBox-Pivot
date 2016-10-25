@@ -52,6 +52,18 @@ $(document).ready (function() {
     ideaBoss.store();
   };
 
+  //editable title saved
+  Idea.prototype.saveNewTitle = function (target) {
+    // this.title = target;
+    ideaBoss.store();
+  };
+
+  //editable body saved
+  Idea.prototype.saveNewBody = function (target) {
+    // this.body = target;
+    ideaBoss.store();
+  };
+
   var ideaBoss = {
     ideaArray: [],
     add: function(title, body) {
@@ -118,6 +130,14 @@ $(document).ready (function() {
       find.downvote();
     } else find.remove();
   });
+
+  //listener on title and bodyInput
+  
+
+  //listener on search for title
+
+  //listener on search for body
+
 
   function addNewIdeaToIdeaBoss() {
     ideaBoss.add(titleInput.val(), bodyInput.val());
