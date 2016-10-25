@@ -1,7 +1,6 @@
 var titleInput = $('#titleInput');
 var bodyInput = $('#bodyInput');
 var saveButton = $('#saveButton');
-var bottomPanel = $('#bottomPanel');
 var ideaSection = $('#ideaSection');
 
 $(document).ready (function() {
@@ -16,14 +15,14 @@ $(document).ready (function() {
     return (`
       <li class="idea-card" id=${this.id}>
         <header>
-          <h3>${this.title}</h3>
+          <h3 contenteditable="true">${this.title}</h3>
           <button class="destroy-button"><img src="Images/delete-hover.svg"/></button>
         </header>
-        <p class="body">${this.body}</p>
+        <p class="body" contenteditable="true">${this.body}</p>
         <footer>
-          <button class="upvote"><img src="Images/upvote-hover.svg"/></button>
-          <button class="downvote"><img src="Images/downvote-hover.svg"/></button>
-          <p class="quality">quality:<span>${this.quality}</span></p>
+          <button id="upvote" class="upvote"><img src="Images/upvote-hover.svg"/></button>
+          <button id="downvote" class="downvote"><img src="Images/downvote-hover.svg"/></button>
+          <h4 class="quality">quality:<span>${this.quality}</span></h4>
         </footer>
       </li>
       `);
@@ -50,6 +49,18 @@ $(document).ready (function() {
     } else if (quality === 'plausible') {
       this.quality = 'swill';
     }
+    ideaBoss.store();
+  };
+
+  //editable title saved
+  Idea.prototype.saveNewTitle = function (target) {
+    // this.title = target;
+    ideaBoss.store();
+  };
+
+  //editable body saved
+  Idea.prototype.saveNewBody = function (target) {
+    // this.body = target;
     ideaBoss.store();
   };
 
@@ -83,7 +94,7 @@ $(document).ready (function() {
     retrieve: function() {
       var retrievedIdeas = JSON.parse(localStorage.getItem('ideas'));
       if (retrievedIdeas) {
-        for (var i = 0; i < retrievedIdeas.length; i++) {
+        for (i = 0; i < retrievedIdeas.length; i++) {
           var idea = retrievedIdeas[i];
           this.ideaArray.push(new Idea(idea.title, idea.body, idea.quality, idea.id));
         }
@@ -99,7 +110,6 @@ $(document).ready (function() {
   }; //end of ideaBoss
 
   saveButton.on('click', function() {
-    // debugger
     addNewIdeaToIdeaBoss();
     clearInputFields();
   });
@@ -111,11 +121,32 @@ $(document).ready (function() {
     }
   });
 
-  ideaSection.on('click', '.destroy-button', function() {
+  ideaSection.on('click', '.destroy-button, .upvote, .downvote', function() {
     var id = $(this).closest('.idea-card').attr('id');
     var find = ideaBoss.find(id);
-    find.remove();
+    if (this.id === 'upvote') {
+      find.upvote();
+    } else if (this.id === 'downvote') {
+      find.downvote();
+    } else find.remove();
   });
+
+  //listener on title and bodyInput
+  ideaSection.on('keydown click', 'h3, p', function(key) {
+    var id = $(this).closest('.idea-card');
+    // addclass
+    if (key.which === 13) {
+      if (event.target.nodeName === 'H3') {
+        var newTitle = $(this).closest('h3').text();
+        ideaBoss.find(id);
+      }
+    }
+  });
+
+  //listener on search for title
+
+  //listener on search for body
+
 
   function addNewIdeaToIdeaBoss() {
     ideaBoss.add(titleInput.val(), bodyInput.val());
@@ -124,6 +155,7 @@ $(document).ready (function() {
   function clearInputFields() {
     titleInput.val('');
     bodyInput.val('');
+    bodyInput.blur();
   }
 
 ideaBoss.retrieve();
