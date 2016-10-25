@@ -15,11 +15,11 @@ header {
   order: 1;
 }
 
-header .idea-color {
+.idea-color {
   color: #00A79D;
 }
 
-header .box-color {
+.box-color {
   color: #6D6E71
 }
 
@@ -67,34 +67,39 @@ input, button {
 
 /* Search Results Section Styling */
 
-.bottom-panel #ideaSection {
+.bottom-panel {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-#search {
+.search {
   height: 30px;
   width: 500px;
-  margin-top: 30px;
-  margin-left: 390px;
+  margin: 30px;
   border: 1px solid #00A79D;
-  order: 1;
+  /*order: 1;*/
   outline: none;
 }
 
+.bottom-header {
+width: auto;
+height: 30px;
+}
+
 h3 {
-  font-family: 'Roboto Slab', serif;
   font-size: 25px;
   color: #6D6E71;
   width: 500px;
 }
 
-p {
-  font-family: 'Open Sans', sans-serif;
-  font-size: 18px;
-  letter-spacing: .5px;
-  color: #939598;
+h4 {
+  margin: 10px;
+  display: inline-block;
+}
+
+footer {
+  margin-bottom: 30px;
 }
 
 .idea-card {
@@ -102,6 +107,7 @@ p {
   order: 2;
   margin-bottom: 25px;
   border-bottom: solid thin #D1D3D4;
+  font-family: 'Roboto Slab', serif;
 }
 
 .destroy-button {
@@ -112,6 +118,7 @@ p {
   outline: none;
   border: none;
   color: none;
+  position: static;
 }
 
 .destroy-button:hover {
@@ -123,11 +130,14 @@ p {
   width: 500px;
   order: 3;
   margin: 20px 0;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  letter-spacing: .5px;
+  color: #939598;
 }
 
 .buttons {
 width: 500px;
-order: 4;
 margin-bottom: 10px;
 }
 
