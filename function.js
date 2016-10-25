@@ -23,7 +23,7 @@ $(document).ready (function() {
         <footer>
           <button class="upvote"><img src="Images/upvote-hover.svg"/></button>
           <button class="downvote"><img src="Images/downvote-hover.svg"/></button>
-          <p class="quality">quality:<span>swill</span></p>
+          <p class="quality">quality:<span>${this.quality}</span></p>
         </footer>
       </li>
       `);
@@ -33,16 +33,26 @@ $(document).ready (function() {
     ideaBoss.remove(this.id);
   };
 
+  Idea.prototype.upvote = function() {
+    var quality = this.quality;
+    if (quality === 'swill') {
+      this.quality = 'plausible';
+    } else if (quality === 'plausible') {
+      this.quality = 'genius';
+    }
+    ideaBoss.store();
+  };
+
   var ideaBoss = {
     ideaArray: [],
-    add: function (title, body) {
+    add: function(title, body) {
       this.ideaArray.push(new Idea(title, body));
       this.store();
     },
 
     find: function(id) {
       id = parseInt(id);
-      return this.ideaArray.find( function (idea) {
+      return this.ideaArray.find( function(idea) {
         return idea.id === id;
       });
     },
@@ -71,7 +81,7 @@ $(document).ready (function() {
     },
 
     remove: function(id) {
-      this.ideaArray = this.ideaArray.filter(function (idea) {
+      this.ideaArray = this.ideaArray.filter(function(idea) {
         return idea.id !== id;
       });
       this.store();
@@ -90,7 +100,14 @@ $(document).ready (function() {
     }
   });
 
-  function addNewIdeaToIdeaBoss () {
+  ideaSection.on('click', '.destroy-button', function() {
+    var id = $(this).closest('.idea-card').attr('id');
+    var find = ideaBoss.find(id);
+    debugger
+    find.remove();
+  });
+
+  function addNewIdeaToIdeaBoss() {
     ideaBoss.add(titleInput.val(), bodyInput.val());
   }
 
@@ -99,14 +116,8 @@ $(document).ready (function() {
     bodyInput.val('');
   }
 
-  ideaSection.on('click', '.destroy-button', function () {
-    // var id = $(this).closest('.idea-card').attr('id');
-    var find = ideaBoss.find(id);
-    find.remove();
-    if (this.id === '.destroy-button') {
-      debugger;
-    }
-  });
+
+
 
 
 
