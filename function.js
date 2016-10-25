@@ -99,7 +99,14 @@ $(document).ready (function() {
     bodyInput.val('');
   }
 
-  
+  ideaSection.on('click', '.destroy-button', function () {
+    // var id = $(this).closest('.idea-card').attr('id');
+    var find = ideaBoss.find(id);
+    find.remove();
+    if (this.id === '.destroy-button') {
+      debugger;
+    }
+  });
 
 
 
