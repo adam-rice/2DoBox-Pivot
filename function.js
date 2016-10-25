@@ -16,12 +16,12 @@ $(document).ready (function() {
       <li class="idea-card" id=${this.id}>
         <header>
           <h3 contenteditable="true">${this.title}</h3>
-          <button class="destroy-button"><img src="Images/delete-hover.svg"/></button>
+          <button class="destroy-button"></button>
         </header>
         <p class="body" contenteditable="true">${this.body}</p>
         <footer>
-          <button id="upvote" class="upvote"><img src="Images/upvote-hover.svg"/></button>
-          <button id="downvote" class="downvote"><img src="Images/downvote-hover.svg"/></button>
+          <button id="upvote" class="upvote"></button>
+          <button id="downvote" class="downvote"></button>
           <h4 class="quality">quality:<span>${this.quality}</span></h4>
         </footer>
       </li>
@@ -135,6 +135,20 @@ $(document).ready (function() {
   ideaSection.on('keydown click', 'h3, p', function(key) {
     var id = $(this).closest('.idea-card').attr('id');
     $(this).addClass('changing-innertext');
+    if (key.which === 13) {
+      if (event.target.nodeName === 'H3') {
+        var newTitle = $(this).closest('h3').text();
+        ideaBoss.find(id).saveNewTitle(newTitle);
+      } else if (event.target.nodeName === 'P') {
+        var newBody = $(this).closest('p').text();
+        ideaBoss.find(id).saveNewBody(newBody);
+      }
+    }
+  });
+
+  ideaSection.on('blur', 'h3, p', function(key) {
+    var id = $(this).closest('.idea-card').attr('id');
+    $(this).removeClass('changing-innertext');
     if (key.which === 13) {
       if (event.target.nodeName === 'H3') {
         var newTitle = $(this).closest('h3').text();
