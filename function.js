@@ -72,7 +72,7 @@ var ideaBoss = {
 Idea.prototype.toHTML = function() {
   return (`
     <li class="idea-card">
-      <header>
+      <header class="card-header">
         <h3>${titleInput.val()}</h3>
         <button class="remove-button"><img src="Images/delete-hover.svg"/></button>
       </header>
@@ -84,7 +84,7 @@ Idea.prototype.toHTML = function() {
       </footer>
     </li>
     `);
-}
+};
 
 ideaBoss.retrieve();
 ideaBoss.render();

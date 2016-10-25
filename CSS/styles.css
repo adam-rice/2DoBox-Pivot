@@ -44,6 +44,7 @@ input, .save-btn {
 
 input {
   text-indent: 10px;
+  outline: none;
 }
 
 .save-btn {
@@ -61,4 +62,42 @@ input {
 
 .idea-card {
   border-bottom: 2px solid #6E6D71;
+}
+
+.bottom-panel {
+  font-family: 'Roboto Slab', serif;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  width: 100%;
+}
+
+.search {
+  width: 45%;
+  height: 50px;
+  border: 1px solid;
+  outline: none;
+}
+.idea-card {
+  width: 500px;
+  height: auto;
+  border: 2px solid black;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-header {
+  display: inline-block;
+  width: 50%;
+}
+
+h3 {
+  display: inline-block;
+}
+
+.remove-button {
+  float: right;
 }
