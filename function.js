@@ -14,9 +14,9 @@ $(document).ready (function() {
   Idea.prototype.toHTML = function() {
     return (`
       <li class="idea-card" id=${this.id}>
-        <header>
-          <h3 contenteditable="true">${this.title}</h3>
-          <button class="destroy-button"></button>
+        <header class="bottom-header">
+          <h3 contenteditable="true">${this.title}<button class="destroy-button"></h3>
+          </button>
         </header>
         <p class="body" contenteditable="true">${this.body}</p>
         <footer>
