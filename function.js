@@ -131,33 +131,18 @@ $(document).ready (function() {
     } else find.remove();
   });
 
-  //listener on title and bodyInput
-  ideaSection.on('keydown click', 'h3, p', function(key) {
+  ideaSection.on('keyup click', 'h3, p', function(key) {
     var id = $(this).closest('.idea-card').attr('id');
-    $(this).addClass('changing-innertext');
+    // $(this).addClass('changing-innertext');
     if (key.which === 13) {
-      if (event.target.nodeName === 'H3') {
-        var newTitle = $(this).closest('h3').text();
-        ideaBoss.find(id).saveNewTitle(newTitle);
-      } else if (event.target.nodeName === 'P') {
-        var newBody = $(this).closest('p').text();
-        ideaBoss.find(id).saveNewBody(newBody);
-      }
+      replaceNodeText();
     }
   });
 
   ideaSection.on('blur', 'h3, p', function(key) {
     var id = $(this).closest('.idea-card').attr('id');
-    $(this).removeClass('changing-innertext');
-    if (key.which === 13) {
-      if (event.target.nodeName === 'H3') {
-        var newTitle = $(this).closest('h3').text();
-        ideaBoss.find(id).saveNewTitle(newTitle);
-      } else if (event.target.nodeName === 'P') {
-        var newBody = $(this).closest('p').text();
-        ideaBoss.find(id).saveNewBody(newBody);
-      }
-    }
+    // $(this).removeClass('changing-innertext');
+    replaceNodeText();
   });
 
   //listener on search for title
@@ -173,6 +158,16 @@ $(document).ready (function() {
     titleInput.val('');
     bodyInput.val('');
     bodyInput.blur();
+  }
+
+  function replaceNodeText() {
+    if (event.target.nodeName === 'H3') {
+      var newTitle = $(this).closest('h3').text();
+      ideaBoss.find(id).saveNewTitle(newTitle);
+    } else if (event.target.nodeName === 'P') {
+      var newBody = $(this).closest('p').text();
+      ideaBoss.find(id).saveNewBody(newBody);
+    }
   }
 
 ideaBoss.retrieve();
