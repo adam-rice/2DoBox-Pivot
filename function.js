@@ -2,6 +2,7 @@ var titleInput = $('#titleInput');
 var bodyInput = $('#bodyInput');
 var saveButton = $('#saveButton');
 var ideaSection = $('#ideaSection');
+var search = $('#search');
 
 $(document).ready (function() {
   function Idea(title, body, quality, id) {
@@ -131,24 +132,61 @@ $(document).ready (function() {
     } else find.remove();
   });
 
-  ideaSection.on('keyup click', 'h3, p', function(key) {
+  ideaSection.on('keydown click', 'h3, p', function(key) {
     var id = $(this).closest('.idea-card').attr('id');
     // $(this).addClass('changing-innertext');
     if (key.which === 13) {
-      replaceNodeText();
+      if (event.target.nodeName === 'H3') {
+        var newTitle = $(this).closest('h3').text();
+        ideaBoss.find(id).saveNewTitle(newTitle);
+      } else if (event.target.nodeName === 'P') {
+        var newBody = $(this).closest('p').text();
+        ideaBoss.find(id).saveNewBody(newBody);
+      }
     }
   });
 
   ideaSection.on('blur', 'h3, p', function(key) {
     var id = $(this).closest('.idea-card').attr('id');
     // $(this).removeClass('changing-innertext');
-    replaceNodeText();
+    if (event.target.nodeName === 'H3') {
+      var newTitle = $(this).closest('h3').text();
+      ideaBoss.find(id).saveNewTitle(newTitle);
+    } else if (event.target.nodeName === 'P') {
+      var newBody = $(this).closest('p').text();
+      ideaBoss.find(id).saveNewBody(newBody);
+    }
   });
 
-  //listener on search for title
+  search.on("keyup", function() {
+    var search = $(this).val().trim();
+    $('h3:contains("' + search + '")').closest('.idea-card').show();
+    $('h3:not(:contains("' + search + '"))').closest('.idea-card').hide();
+  });
 
-  //listener on search for body
+  search.on('keyup', function() {
+    var search = $(this).val().trim();
+    $('p:contains("' + search + '")').closest('.idea-card').show();
+    // $('p:not(:contains("' + search + '"))').closest('.idea-card').hide();
+  });
 
+  titleInput.keyup( function() {
+    enableSave();
+  });
+
+  bodyInput.keyup( function ()  {
+    enableSave();
+  });
+
+  function enableSave() {
+    var title = titleInput.val();
+    var body = bodyInput.val();
+    if (title === "" || body === "") {
+      saveButton.attr('disabled', true); }
+    else if (title !== "" && body !== "") {
+      saveButton.attr('disabled', false);
+    }
+  }
 
   function addNewIdeaToIdeaBoss() {
     ideaBoss.add(titleInput.val(), bodyInput.val());
@@ -158,17 +196,19 @@ $(document).ready (function() {
     titleInput.val('');
     bodyInput.val('');
     bodyInput.blur();
+    saveButton.attr('disabled', true);
   }
 
-  function replaceNodeText() {
-    if (event.target.nodeName === 'H3') {
-      var newTitle = $(this).closest('h3').text();
-      ideaBoss.find(id).saveNewTitle(newTitle);
-    } else if (event.target.nodeName === 'P') {
-      var newBody = $(this).closest('p').text();
-      ideaBoss.find(id).saveNewBody(newBody);
-    }
-  }
+  // on refactor...
+  // function replaceNodeText() {
+  //   if (event.target.nodeName === 'H3') {
+  //     var newTitle = $(this).closest('h3').text();
+  //     ideaBoss.find(id).saveNewTitle(newTitle);
+  //   } else if (event.target.nodeName === 'P') {
+  //     var newBody = $(this).closest('p').text();
+  //     ideaBoss.find(id).saveNewBody(newBody);
+  //   }
+  // }
 
 ideaBoss.retrieve();
 ideaBoss.render();
