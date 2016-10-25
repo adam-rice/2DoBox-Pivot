@@ -15,14 +15,14 @@ $(document).ready (function() {
     return (`
       <li class="idea-card" id=${this.id}>
         <header>
-          <h3>${this.title}</h3>
+          <h3 contenteditable="true">${this.title}</h3>
           <button class="destroy-button"><img src="Images/delete-hover.svg"/></button>
         </header>
-        <p class="body">${this.body}</p>
+        <p class="body" contenteditable="true">${this.body}</p>
         <footer>
           <button id="upvote" class="upvote"><img src="Images/upvote-hover.svg"/></button>
           <button id="downvote" class="downvote"><img src="Images/downvote-hover.svg"/></button>
-          <p class="quality">quality:<span>${this.quality}</span></p>
+          <h4 class="quality">quality:<span>${this.quality}</span></h4>
         </footer>
       </li>
       `);
@@ -82,7 +82,7 @@ $(document).ready (function() {
     retrieve: function() {
       var retrievedIdeas = JSON.parse(localStorage.getItem('ideas'));
       if (retrievedIdeas) {
-        for (var i = 0; i < retrievedIdeas.length; i++) {
+        for (i = 0; i < retrievedIdeas.length; i++) {
           var idea = retrievedIdeas[i];
           this.ideaArray.push(new Idea(idea.title, idea.body, idea.quality, idea.id));
         }
