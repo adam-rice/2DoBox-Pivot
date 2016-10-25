@@ -5,24 +5,6 @@ var bottomPanel = $('#bottomPanel');
 var ideaSection = $('#ideaSection');
 
 $(document).ready (function() {
-
-  // saveButton.on('click', function () {
-  //   ideaSection.prepend(`
-  //     <li class="idea-card">
-  //       <header>
-  //         <h3>${titleInput.val()}</h3>
-  //         <button class="remove-button"><img src="Images/delete-hover.svg"/></button>
-  //       </header>
-  //       <p class="body">${bodyInput.val()}</p>
-  //       <footer>
-  //         <button class="upvote"><img src="Images/upvote-hover.svg"/></button>
-  //         <button class="downvote"><img src="Images/downvote-hover.svg"/></button>
-  //         <p class="quality">quality:<span>swill</span></p>
-  //       </footer>
-  //     </li>
-  //   `);
-  // });
-
   function Idea(title, body, quality, id) {
     this.title = title;
     this.body = body;
@@ -33,22 +15,21 @@ $(document).ready (function() {
   Idea.prototype.toHTML = function() {
     return (`
       <li class="idea-card" id=${this.id}>
-      <header>
-      <h3>${this.title}</h3>
-      <button class="remove-button"><img src="Images/delete-hover.svg"/></button>
-      </header>
-      <p class="body">${this.body}</p>
-      <footer>
-      <button class="upvote"><img src="Images/upvote-hover.svg"/></button>
-      <button class="downvote"><img src="Images/downvote-hover.svg"/></button>
-      <p class="quality">quality:<span>swill</span></p>
-      </footer>
+        <header>
+          <h3>${this.title}</h3>
+          <button class="destroy-button"><img src="Images/delete-hover.svg"/></button>
+        </header>
+        <p class="body">${this.body}</p>
+        <footer>
+          <button class="upvote"><img src="Images/upvote-hover.svg"/></button>
+          <button class="downvote"><img src="Images/downvote-hover.svg"/></button>
+          <p class="quality">quality:<span>swill</span></p>
+        </footer>
       </li>
       `);
     };
 
   Idea.prototype.remove = function(id) {
-    // id = parseInt(id);
     ideaBoss.remove(this.id);
   };
 
@@ -90,13 +71,24 @@ $(document).ready (function() {
     },
 
     remove: function(id) {
-      // idTwo = parseInt(id);
       this.ideaArray = this.ideaArray.filter(function (idea) {
         return idea.id !== id;
       });
       this.store();
     }
-  };
+  }; //end of ideaBoss
+
+  saveButton.on('click', function() {
+    addNewIdeaToIdeaBoss();
+    clearInputFields();
+  });
+
+  bodyInput.on('keyup', function(key) {
+    if (key.which === 13) {
+      addNewIdeaToIdeaBoss();
+      clearInputFields();
+    }
+  });
 
   function addNewIdeaToIdeaBoss () {
     ideaBoss.add(titleInput.val(), bodyInput.val());
@@ -107,10 +99,10 @@ $(document).ready (function() {
     bodyInput.val('');
   }
 
-  saveButton.on('click', function() {
-    addNewIdeaToIdeaBoss();
-    clearInputFields();
-  });
+  
+
+
+
 
   ideaBoss.retrieve();
   ideaBoss.render();
