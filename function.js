@@ -1,7 +1,6 @@
 var titleInput = $('#titleInput');
 var bodyInput = $('#bodyInput');
 var saveButton = $('#saveButton');
-var bottomPanel = $('#bottomPanel');
 var ideaSection = $('#ideaSection');
 
 $(document).ready (function() {
@@ -21,8 +20,8 @@ $(document).ready (function() {
         </header>
         <p class="body">${this.body}</p>
         <footer>
-          <button class="upvote"><img src="Images/upvote-hover.svg"/></button>
-          <button class="downvote"><img src="Images/downvote-hover.svg"/></button>
+          <button id="upvote" class="upvote"><img src="Images/upvote-hover.svg"/></button>
+          <button id="downvote" class="downvote"><img src="Images/downvote-hover.svg"/></button>
           <p class="quality">quality:<span>${this.quality}</span></p>
         </footer>
       </li>
@@ -99,7 +98,6 @@ $(document).ready (function() {
   }; //end of ideaBoss
 
   saveButton.on('click', function() {
-    // debugger
     addNewIdeaToIdeaBoss();
     clearInputFields();
   });
@@ -111,10 +109,14 @@ $(document).ready (function() {
     }
   });
 
-  ideaSection.on('click', '.destroy-button', function() {
+  ideaSection.on('click', '.destroy-button, .upvote, .downvote', function() {
     var id = $(this).closest('.idea-card').attr('id');
     var find = ideaBoss.find(id);
-    find.remove();
+    if (this.id === 'upvote') {
+      find.upvote();
+    } else if (this.id === 'downvote') {
+      find.downvote();
+    } else find.remove();
   });
 
   function addNewIdeaToIdeaBoss() {
@@ -124,6 +126,7 @@ $(document).ready (function() {
   function clearInputFields() {
     titleInput.val('');
     bodyInput.val('');
+    bodyInput.blur();
   }
 
 ideaBoss.retrieve();
