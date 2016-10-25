@@ -75,20 +75,28 @@ $(document).ready (function() {
     },
 
     store: function() {
-      localStorage.setItem('idea', JSON.stringify(this.idea));
-      render();
+      localStorage.setItem('ideas', JSON.stringify(this.ideaArray));
+      this.render();
     },
 
     retrieve: function() {
-      var retrievedIdeas = JSON.parse(localStorage.getItem('idea'));
+      var retrievedIdeas = JSON.parse(localStorage.getItem('ideas'));
       if (retrievedIdeas) {
-        this.idea = retrievedIdeas.map(function(idea) {
-          return new Idea(idea.title, idea.body, idea.quality, idea.id);
-        });
+        for (var i = 0; i < retrievedIdeas.length; i++) {
+          var idea = retrievedIdeas[i];
+          this.ideaArray.push(new Idea(this.title, this.body, this.quality, this.id));
+        }
       }
+    },
+
+    remove: function(id) {
+      // idTwo = parseInt(id);
+      this.ideaArray = this.ideaArray.filter(function (idea) {
+        return idea.id !== id;
+      });
+      this.store();
     }
   };
-
 
   ideaBoss.retrieve();
   ideaBoss.render();
