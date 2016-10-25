@@ -134,7 +134,7 @@ $(document).ready (function() {
   //listener on title and bodyInput
   ideaSection.on('keydown click', 'h3, p', function(key) {
     var id = $(this).closest('.idea-card');
-    // addclass
+    $(this).addClass('changing-innertext');
     if (key.which === 13) {
       if (event.target.nodeName === 'H3') {
         var newTitle = $(this).closest('h3').text();
