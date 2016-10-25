@@ -54,13 +54,13 @@ $(document).ready (function() {
 
   //editable title saved
   Idea.prototype.saveNewTitle = function (target) {
-    // this.title = target;
+    this.title = target;
     ideaBoss.store();
   };
 
   //editable body saved
   Idea.prototype.saveNewBody = function (target) {
-    // this.body = target;
+    this.body = target;
     ideaBoss.store();
   };
 
@@ -133,12 +133,15 @@ $(document).ready (function() {
 
   //listener on title and bodyInput
   ideaSection.on('keydown click', 'h3, p', function(key) {
-    var id = $(this).closest('.idea-card');
+    var id = $(this).closest('.idea-card').attr('id');
     $(this).addClass('changing-innertext');
     if (key.which === 13) {
       if (event.target.nodeName === 'H3') {
         var newTitle = $(this).closest('h3').text();
-        ideaBoss.find(id);
+        ideaBoss.find(id).saveNewTitle(newTitle);
+      } else if (event.target.nodeName === 'P') {
+        var newBody = $(this).closest('p').text();
+        ideaBoss.find(id).saveNewBody(newBody);
       }
     }
   });
