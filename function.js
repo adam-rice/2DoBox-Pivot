@@ -126,7 +126,6 @@ $(document).ready (function() {
     bodyInput.val('');
   }
 
-  ideaBoss.retrieve();
-  ideaBoss.render();
-
+ideaBoss.retrieve();
+ideaBoss.render();
 });

@@ -1,0 +1,183 @@
+.top-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #E5F3F2;
+}
+
+/* header specific styling */
+header {
+  font-family: 'Roboto Slab', serif;
+  font-size: 50px;
+  width: 180px;
+  height: 50px;
+  margin: 20px 0;
+  order: 1;
+}
+
+header .idea-color {
+  color: #00A79D;
+}
+
+header .box-color {
+  color: #6D6E71
+}
+
+/* input & button styling*/
+input {
+  text-indent: 10px;
+}
+
+input, button {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+}
+
+#titleInput {
+  height: 30px;
+  width: 500px;
+  margin: 5px 0;
+  order: 2;
+  outline: none;
+}
+
+#bodyInput {
+  height: 30px;
+  width: 500px;
+  margin: 5px 0;
+  order: 3;
+  outline: none;
+}
+
+.save-btn {
+  height: 40px;
+  width: 500px;
+  margin: 5px 0 20px;
+  order: 4;
+  background-color: #00A79D;
+  color: #FFFFFF;
+  border: none;
+  outline: none;
+}
+
+.save-btn:hover {
+  background-color: #045E55;
+  cursor: pointer;
+}
+
+/* Search Results Section Styling */
+
+.bottom-panel #ideaSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#search {
+  height: 30px;
+  width: 500px;
+  margin-top: 30px;
+  margin-left: 390px;
+  border: 1px solid #00A79D;
+  order: 1;
+  outline: none;
+}
+
+h3 {
+  font-family: 'Roboto Slab', serif;
+  font-size: 25px;
+  color: #6D6E71;
+  width: 500px;
+}
+
+p {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  letter-spacing: .5px;
+  color: #939598;
+}
+
+.idea-card {
+  width: 500px;
+  order: 2;
+  margin-bottom: 25px;
+  border-bottom: solid thin #D1D3D4;
+}
+
+.destroy-button {
+  background: url(../Images/delete.svg);
+  width: 30px;
+  height: 30px;
+  float: right;
+  outline: none;
+  border: none;
+  color: none;
+}
+
+.destroy-button:hover {
+  background: url(../Images/delete-hover.svg);
+  cursor: pointer;
+}
+
+.body {
+  width: 500px;
+  order: 3;
+  margin: 20px 0;
+}
+
+.buttons {
+width: 500px;
+order: 4;
+margin-bottom: 10px;
+}
+
+.upvote {
+  background: url(../Images/upvote.svg);
+  width: 30px;
+  height: 30px;
+  outline: none;
+  border: none;
+  color: none;
+  margin-right: 10px;
+}
+
+.upvote:hover {
+  background: url(../Images/upvote-hover.svg);
+  cursor: pointer;
+}
+
+.downvote {
+  background: url(../Images/downvote.svg);
+  width: 30px;
+  height: 30px;
+  outline: none;
+  border: none;
+  color: none;
+  margin: 0 20px 0 10px;
+}
+
+.downvote:hover {
+  background: url(../Images/downvote-hover.svg);
+  cursor:pointer;
+}
+
+@media screen and (max-width: 550px) {
+  .top-panel, .bottom-panel {
+    width: 100%;
+  }
+
+  h3, .idea-output, .save-btn, .search {
+    width: 300px;
+  }
+
+  #bodyInput {
+    width: 300px;
+    height: 100px;
+  }
+
+  #bodyInput::-webkit-input-placeholder {
+    vertical-align: text-top;
+
+  }
+
+}
