@@ -67,10 +67,11 @@ $(document).ready (function() {
     },
 
     render: function () {
-      ideaSection.html(this.ideaArray.map( function(idea) {
-        return idea.toHTML();
-        })
-      );
+      ideaSection.html('');
+      for (var i = 0; i < this.ideaArray.length; i++) {
+        var idea = this.ideaArray[i];
+        ideaSection.prepend(idea.toHTML());
+      }
     },
 
     store: function() {
