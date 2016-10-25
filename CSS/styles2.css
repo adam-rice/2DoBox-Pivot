@@ -77,8 +77,7 @@ input, button {
   height: 30px;
   width: 500px;
   margin: 30px;
-  border: 1px solid #00A79D;
-  /*order: 1;*/
+  border: 1px solid #CCCCCC;
   outline: none;
 }
 
@@ -100,6 +99,11 @@ h4 {
 
 footer {
   margin-bottom: 30px;
+}
+
+.quality-change {
+font-family: 'Open Sans', sans-serif;
+color: #6D6E71;
 }
 
 .idea-card {

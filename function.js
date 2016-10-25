@@ -22,7 +22,7 @@ $(document).ready (function() {
         <footer>
           <button id="upvote" class="upvote"></button>
           <button id="downvote" class="downvote"></button>
-          <h4 class="quality">quality:<span>${this.quality}</span></h4>
+          <h4 class="quality">quality:<span class="quality-change"> ${this.quality}</span></h4>
         </footer>
       </li>
       `);
