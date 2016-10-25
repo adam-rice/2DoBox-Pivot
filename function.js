@@ -170,6 +170,24 @@ $(document).ready (function() {
     // $('p:not(:contains("' + search + '"))').closest('.idea-card').hide();
   });
 
+  titleInput.keyup( function() {
+    enableSave();
+  });
+
+  bodyInput.keyup( function ()  {
+    enableSave();
+  });
+
+  function enableSave() {
+    var title = titleInput.val();
+    var body = bodyInput.val();
+    if (title === "" || body === "") {
+      saveButton.attr('disabled', true); }
+    else if (title !== "" && url !== "") {
+      saveButton.attr('disabled', false);
+    }
+  }
+
   function addNewIdeaToIdeaBoss() {
     ideaBoss.add(titleInput.val(), bodyInput.val());
   }
