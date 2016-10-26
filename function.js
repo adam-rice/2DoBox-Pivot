@@ -53,13 +53,11 @@ $(document).ready (function() {
     ideaBoss.store();
   };
 
-  //editable title saved
   Idea.prototype.saveNewTitle = function (target) {
     this.title = target;
     ideaBoss.store();
   };
 
-  //editable body saved
   Idea.prototype.saveNewBody = function (target) {
     this.body = target;
     ideaBoss.store();
@@ -136,26 +134,14 @@ $(document).ready (function() {
     var id = $(this).closest('.idea-card').attr('id');
     $(this).addClass('changing-innertext');
     if (key.which === 13) {
-      if (event.target.nodeName === 'H3') {
-        var newTitle = $(this).closest('h3').text();
-        ideaBoss.find(id).saveNewTitle(newTitle);
-      } else if (event.target.nodeName === 'P') {
-        var newBody = $(this).closest('p').text();
-        ideaBoss.find(id).saveNewBody(newBody);
-      }
+      replaceNodeText($(this), id);
     }
   });
 
-  ideaSection.on('blur', 'h3, p', function(key) {
+  ideaSection.on('blur', 'h3, p', function() {
     var id = $(this).closest('.idea-card').attr('id');
      $(this).removeClass('changing-innertext');
-    if (event.target.nodeName === 'H3') {
-      var newTitle = $(this).closest('h3').text();
-      ideaBoss.find(id).saveNewTitle(newTitle);
-    } else if (event.target.nodeName === 'P') {
-      var newBody = $(this).closest('p').text();
-      ideaBoss.find(id).saveNewBody(newBody);
-    }
+     replaceNodeText($(this), id);
   });
 
   search.on("keyup", function() {
@@ -199,16 +185,16 @@ $(document).ready (function() {
     saveButton.attr('disabled', true);
   }
 
-  // on refactor...
-  // function replaceNodeText() {
-  //   if (event.target.nodeName === 'H3') {
-  //     var newTitle = $(this).closest('h3').text();
-  //     ideaBoss.find(id).saveNewTitle(newTitle);
-  //   } else if (event.target.nodeName === 'P') {
-  //     var newBody = $(this).closest('p').text();
-  //     ideaBoss.find(id).saveNewBody(newBody);
-  //   }
-  // }
+
+  function replaceNodeText(selector, id) {
+    if (event.target.nodeName === 'H3') {
+      var newTitle = selector.closest('h3').text();
+      ideaBoss.find(id).saveNewTitle(newTitle);
+    } else if (event.target.nodeName === 'P') {
+      var newBody = selector.closest('p').text();
+      ideaBoss.find(id).saveNewBody(newBody);
+    }
+  }
 
 ideaBoss.retrieve();
 ideaBoss.render();
