@@ -1,5 +1,7 @@
 var assert = require('chai').assert;
 var Idea = require('../exercises/idea');
+var ideaBoss = require('../exercises/idea');
+
 
 describe('Idea', function () {
 
@@ -47,23 +49,29 @@ describe('Idea', function () {
     assert.isFunction(idea.toHTML);
   });
 
+  it('remove should be a function', function () {
+    var idea = new Idea();
+    assert.isFunction(idea.remove);
+  });
 
+  it('upvote should be a function', function () {
+    var idea = new Idea();
+    assert.isFunction(idea.upvote);
+  });
 
+  it('downvote should be a function', function () {
+    var idea = new Idea();
+    assert.isFunction(idea.downvote);
+  });
 
+  it('saveNewTitle should be a function', function () {
+    var idea = new Idea();
+    assert.isFunction(idea.saveNewTitle);
+  });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  it('saveNewBody should be a function', function () {
+    var idea = new Idea();
+    assert.isFunction(idea.saveNewBody);
+  });
 
 });
