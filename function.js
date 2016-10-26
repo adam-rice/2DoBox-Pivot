@@ -148,12 +148,7 @@ $(document).ready (function() {
     var search = $(this).val();
     $('h3:contains("' + search + '")').closest('.idea-card').show();
     $('h3:not(:contains("' + search + '"))').closest('.idea-card').hide();
-  });
-
-  search.on('keyup', function() {
-    var search = $(this).val();
     $('p:contains("' + search + '")').closest('.idea-card').show();
-    // $('p:not(:contains("' + search + '"))').closest('.idea-card').hide();
   });
 
   titleInput.keyup( function() {
@@ -184,7 +179,6 @@ $(document).ready (function() {
     bodyInput.blur();
     saveButton.attr('disabled', true);
   }
-
 
   function replaceNodeText(selector, id) {
     if (event.target.nodeName === 'H3') {
