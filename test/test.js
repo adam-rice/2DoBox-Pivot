@@ -100,9 +100,14 @@ describe('Idea', function() {
     assert.isFunction(idea.saveNewBody);
   });
 
+  it('should replace the body if saveNewBody is called', function() {
+    var idea = new Idea('Whale', 'Is blue.');
+    idea.saveNewBody('Likes to swim.');
+    assert.equal(idea.body, 'Likes to swim.');
+  });
+
   // it('should instantiate our good friend, Idea', function() {
   //   var ideaBoss = ;
   //   assert.isFunction(ideaBoss.find);
   // });
-
 });
