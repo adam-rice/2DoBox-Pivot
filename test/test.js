@@ -7,6 +7,11 @@ describe('Idea', function () {
     assert.isFunction(Idea);
   });
 
+  it('should instantiate our good friend, Idea', function () {
+    var idea = new Idea();
+    assert.isObject(idea);
+  });
+
   it('should have a title', function () {
      var idea = new Idea('Whale');
      assert.equal(idea.title, 'Whale');
