@@ -22,6 +22,9 @@ describe('Idea', function () {
     assert.equal(idea.body, 'Is blue.');
   });
 
-  //it
+  it('should have a default quality of "swill"', function()  {
+    var idea = new Idea('Whale', 'Is blue.');
+    assert.equal(idea.quality, 'swill');
+  });
 
 });
