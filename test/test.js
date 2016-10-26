@@ -66,6 +66,4 @@ describe('Idea', function () {
 
 
 
-
-
 });
