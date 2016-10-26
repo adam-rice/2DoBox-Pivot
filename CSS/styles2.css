@@ -39,6 +39,10 @@ textarea {
   resize: none;
 }
 
+textarea::-webkit-input-placeholder {
+  padding-top: 4px;
+}
+
 .titleInput {
   height: 30px;
   width: 500px;
