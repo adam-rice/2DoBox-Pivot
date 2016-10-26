@@ -84,14 +84,25 @@ describe('Idea', function() {
     assert.equal(idea.quality, 'swill');
   });
 
-  // it('saveNewTitle should be a function', function() {
-  //   var idea = new Idea();
-  //   assert.isFunction(idea.saveNewTitle);
-  // });
-  //
-  // it('saveNewBody should be a function', function() {
-  //   var idea = new Idea();
-  //   assert.isFunction(idea.saveNewBody);
+  it('saveNewTitle should be a function', function() {
+    var idea = new Idea();
+    assert.isFunction(idea.saveNewTitle);
+  });
+
+  it('should replace the title if saveNewTitle is called', function() {
+    var idea = new Idea('Whale');
+    idea.saveNewTitle('Squid');
+    assert.equal(idea.title, 'Squid');
+  });
+
+  it('saveNewBody should be a function', function() {
+    var idea = new Idea();
+    assert.isFunction(idea.saveNewBody);
+  });
+
+  // it('should instantiate our good friend, Idea', function() {
+  //   var ideaBoss = ;
+  //   assert.isFunction(ideaBoss.find);
   // });
 
 });
