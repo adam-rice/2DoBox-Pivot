@@ -16,8 +16,8 @@ $(document).ready (function() {
     return (`
       <li class="idea-card" id=${this.id}>
         <header class="bottom-header">
-          <h3 contenteditable="true">${this.title}<button class="destroy-button"></h3>
-          </button>
+        <button class="destroy-button"></button>
+        <h3 contenteditable="true">${this.title}</h3>
         </header>
         <p class="body" contenteditable="true">${this.body}</p>
         <footer>

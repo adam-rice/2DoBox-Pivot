@@ -195,7 +195,8 @@ margin-bottom: 10px;
   }
 
   .bodyInput::webkit-input-placeholder {
-    vertical-align: text-top;
+  text-align: left;
+  text-align-last: 
 
   }
 
