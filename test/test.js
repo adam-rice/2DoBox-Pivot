@@ -7,4 +7,9 @@ describe('Idea', function () {
     assert.isFunction(Idea);
   });
 
+  it('should have a title', function () {
+   var idea = new Idea('Whale');
+   assert.equal(idea.title, 'Whale');
+ });
+
 });

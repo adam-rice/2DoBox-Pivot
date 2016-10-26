@@ -5,6 +5,4 @@ function Idea(title, body, quality, id) {
   this.id = id || Date.now();
 }
 
-
-
 module.exports = Idea;
