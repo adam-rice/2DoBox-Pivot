@@ -24,14 +24,19 @@ header {
 }
 
 /* input & button styling*/
-input {
+input, textarea {
   text-indent: 10px;
   color: #939598;
+  border: 1px solid #939598;
 }
 
-input, button {
+input, textarea, button {
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
+}
+
+textarea {
+  resize: none;
 }
 
 .titleInput {
@@ -78,7 +83,6 @@ input, button {
   height: 40px;
   width: 505px;
   margin: 30px;
-  border: 1px solid #CCCCCC;
   outline: none;
 }
 
@@ -194,12 +198,16 @@ margin-bottom: 10px;
 }
 
 @media screen and (max-width: 550px) {
-  .top-panel, .bottom-panel {
+  .top-panel, .bottom-panel, .body {
     width: 100%;
   }
 
   h3, .idea-output, .save-btn, .search {
     width: 300px;
+  }
+
+  h3 {
+    max-width: 200px;
   }
 
   .titleInput, .bodyInput, .idea-card {
@@ -210,8 +218,5 @@ margin-bottom: 10px;
     height: 100px;
   }
 
-  .bodyInput::-webkit-input-placeholder {
-  al
-  }
 
 }
