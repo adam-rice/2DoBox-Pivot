@@ -37,6 +37,7 @@ input, textarea, button {
 
 textarea {
   resize: none;
+  padding-top: 4px;
 }
 
 textarea::-webkit-input-placeholder {
