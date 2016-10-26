@@ -146,9 +146,9 @@ $(document).ready (function() {
 
   search.on("keyup", function() {
     var search = $(this).val();
-    $('h3:contains("' + search + '")').closest('.idea-card').show();
-    $('h3:not(:contains("' + search + '"))').closest('.idea-card').hide();
-    $('p:contains("' + search + '")').closest('.idea-card').show();
+    $('h3:contains(' + search + ')').closest('.idea-card').show();
+    $('h3:not(:contains(' + search + '))').closest('.idea-card').hide();
+    $('p:contains(' + search + ')').closest('.idea-card').show();
   });
 
   titleInput.keyup( function() {

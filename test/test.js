@@ -42,4 +42,30 @@ describe('Idea', function () {
     assert.equal(idea.id, '556677');
   });
 
+  it('toHTML should be a function', function () {
+    var idea = new Idea();
+    assert.isFunction(idea.toHTML);
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 });
