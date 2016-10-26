@@ -37,9 +37,9 @@ describe('Idea', function () {
     assert.equal(idea.id, Date.now());
   });
 
-  it.skip('should accept a quality if indicated', function()  {
-    var idea = new Idea('Whale', 'Is blue.', 'genius');
-    assert.equal(idea.quality, 'genius');
+  it('should accept an id if provided', function()  {
+    var idea = new Idea('Whale', 'Is blue.', 'genius', '556677');
+    assert.equal(idea.id, '556677');
   });
 
 });
