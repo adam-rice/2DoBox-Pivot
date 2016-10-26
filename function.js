@@ -134,7 +134,7 @@ $(document).ready (function() {
 
   ideaSection.on('keydown click', 'h3, p', function(key) {
     var id = $(this).closest('.idea-card').attr('id');
-    // $(this).addClass('changing-innertext');
+    $(this).addClass('changing-innertext');
     if (key.which === 13) {
       if (event.target.nodeName === 'H3') {
         var newTitle = $(this).closest('h3').text();
@@ -148,7 +148,7 @@ $(document).ready (function() {
 
   ideaSection.on('blur', 'h3, p', function(key) {
     var id = $(this).closest('.idea-card').attr('id');
-    // $(this).removeClass('changing-innertext');
+     $(this).removeClass('changing-innertext');
     if (event.target.nodeName === 'H3') {
       var newTitle = $(this).closest('h3').text();
       ideaBoss.find(id).saveNewTitle(newTitle);
