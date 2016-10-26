@@ -27,4 +27,9 @@ describe('Idea', function () {
     assert.equal(idea.quality, 'swill');
   });
 
+  it('should accept a quality if indicated', function()  {
+    var idea = new Idea('Whale', 'Is blue.', 'genius');
+    assert.equal(idea.quality, 'genius');
+  });
+
 });
