@@ -32,4 +32,14 @@ describe('Idea', function () {
     assert.equal(idea.quality, 'genius');
   });
 
+  it('should have a default id of Date.now()', function()  {
+    var idea = new Idea('Whale', 'Is blue.');
+    assert.equal(idea.id, Date.now());
+  });
+
+  it.skip('should accept a quality if indicated', function()  {
+    var idea = new Idea('Whale', 'Is blue.', 'genius');
+    assert.equal(idea.quality, 'genius');
+  });
+
 });
