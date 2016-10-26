@@ -3,23 +3,23 @@ var Idea = require('../exercises/idea');
 var ideaBoss = require('../exercises/idea');
 
 
-describe('Idea', function () {
+describe('Idea', function() {
 
-  it('should be a function', function () {
+  it('should be a function', function() {
     assert.isFunction(Idea);
   });
 
-  it('should instantiate our good friend, Idea', function () {
+  it('should instantiate our good friend, Idea', function() {
     var idea = new Idea();
     assert.isObject(idea);
   });
 
-  it('should have a title', function () {
+  it('should have a title', function() {
      var idea = new Idea('Whale');
      assert.equal(idea.title, 'Whale');
   });
 
-  it('should have a body', function () {
+  it('should have a body', function() {
     var idea = new Idea('Whale', 'Is blue.');
     assert.equal(idea.body, 'Is blue.');
   });
@@ -44,34 +44,44 @@ describe('Idea', function () {
     assert.equal(idea.id, '556677');
   });
 
-  it('toHTML should be a function', function () {
+  it('toHTML should be a function', function() {
     var idea = new Idea();
     assert.isFunction(idea.toHTML);
   });
 
-  it('remove should be a function', function () {
+  it('remove should be a function', function() {
     var idea = new Idea();
     assert.isFunction(idea.remove);
   });
 
-  it('upvote should be a function', function () {
+  it('upvote should be a function', function() {
     var idea = new Idea();
     assert.isFunction(idea.upvote);
   });
 
-  it('downvote should be a function', function () {
-    var idea = new Idea();
-    assert.isFunction(idea.downvote);
+  it('should up the quality if upvote is called', function () {
+    var idea = new Idea('Whale', 'Is blue.', 'swill');
+    idea.upvote();
+    assert.equal(idea.quality, 'plausible');
+    idea.upvote();
+    assert.equal(idea.quality, 'genius');
+    idea.upvote();
+    assert.equal(idea.quality, 'genius');
   });
-
-  it('saveNewTitle should be a function', function () {
-    var idea = new Idea();
-    assert.isFunction(idea.saveNewTitle);
-  });
-
-  it('saveNewBody should be a function', function () {
-    var idea = new Idea();
-    assert.isFunction(idea.saveNewBody);
-  });
+  //
+  // it('downvote should be a function', function() {
+  //   var idea = new Idea();
+  //   assert.isFunction(idea.downvote);
+  // });
+  //
+  // it('saveNewTitle should be a function', function() {
+  //   var idea = new Idea();
+  //   assert.isFunction(idea.saveNewTitle);
+  // });
+  //
+  // it('saveNewBody should be a function', function() {
+  //   var idea = new Idea();
+  //   assert.isFunction(idea.saveNewBody);
+  // });
 
 });

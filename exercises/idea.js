@@ -33,7 +33,7 @@ function Idea(title, body, quality, id) {
     } else if (quality === 'plausible') {
       this.quality = 'genius';
     }
-    ideaBoss.store();
+    // ideaBoss.store();
   };
 
   Idea.prototype.downvote = function() {
@@ -43,62 +43,17 @@ function Idea(title, body, quality, id) {
     } else if (quality === 'plausible') {
       this.quality = 'swill';
     }
-    ideaBoss.store();
+    // ideaBoss.store();
   };
 
   Idea.prototype.saveNewTitle = function (target) {
     this.title = target;
-    ideaBoss.store();
+    // ideaBoss.store();
   };
 
   Idea.prototype.saveNewBody = function (target) {
     this.body = target;
-    ideaBoss.store();
+    // ideaBoss.store();
   };
-
-  var ideaBoss = {
-    ideaArray: [],
-    add: function(title, body) {
-      this.ideaArray.push(new Idea(title, body));
-      this.store();
-    },
-
-    find: function(id) {
-      id = parseInt(id);
-      return this.ideaArray.find( function(idea) {
-        return idea.id === id;
-      });
-    },
-
-    render: function () {
-      ideaSection.html('');
-      for (var i = 0; i < this.ideaArray.length; i++) {
-        var idea = this.ideaArray[i];
-        ideaSection.prepend(idea.toHTML());
-      }
-    },
-
-    store: function() {
-      localStorage.setItem('ideas', JSON.stringify(this.ideaArray));
-      this.render();
-    },
-
-    retrieve: function() {
-      var retrievedIdeas = JSON.parse(localStorage.getItem('ideas'));
-      if (retrievedIdeas) {
-        for (i = 0; i < retrievedIdeas.length; i++) {
-          var idea = retrievedIdeas[i];
-          this.ideaArray.push(new Idea(idea.title, idea.body, idea.quality, idea.id));
-        }
-      }
-    },
-
-    remove: function(id) {
-      this.ideaArray = this.ideaArray.filter(function(idea) {
-        return idea.id !== id;
-      });
-      this.store();
-    }
-  }; //end of ideaBoss
 
 module.exports = Idea;
