@@ -1,21 +1,7 @@
-# Mythical Creatures
+# IdeaBox
 
-## Installation Steps
+[View the application.](https://chzmkl.github.io/Idea-Box/)
 
-1. Clone the repo
-2. cd into the directory
-3. Run your first test suite ```npm test test/unicorn-test.js```
-4. Make the tests pass
-5. Lather, rinse, repeat through the creatures (in order), running tests and making things pass
+An application to store your ideas. Created by [Chaz-Mykl Gormley](https://github.com/CHZMKL) and [Adam Rice](https://github.com/adam-rice) using JavaScript, jQuery, LocalStorage, JSON, HTML & CSS.
 
-## Creature Order
-
-* `unicorn`
-* `vampire`
-* `dragon`
-* `hobbit`
-* `pirate`
-* `wizard`
-* `medusa`
-* `werewolf`
-* `centaur`
+![alt_tag](https://upload.wikimedia.org/wikipedia/commons/5/5b/Clouds_over_Africa.jpg)
