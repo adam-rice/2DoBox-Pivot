@@ -1,7 +1,5 @@
 var assert = require('chai').assert;
 var Idea = require('../exercises/idea');
-var ideaBoss = require('../exercises/idea');
-
 
 describe('Idea', function() {
 
@@ -106,8 +104,4 @@ describe('Idea', function() {
     assert.equal(idea.body, 'Likes to swim.');
   });
 
-  // it('should instantiate our good friend, Idea', function() {
-  //   var ideaBoss = ;
-  //   assert.isFunction(ideaBoss.find);
-  // });
 });
