@@ -68,12 +68,22 @@ describe('Idea', function() {
     idea.upvote();
     assert.equal(idea.quality, 'genius');
   });
-  //
-  // it('downvote should be a function', function() {
-  //   var idea = new Idea();
-  //   assert.isFunction(idea.downvote);
-  // });
-  //
+
+  it('downvote should be a function', function() {
+    var idea = new Idea();
+    assert.isFunction(idea.downvote);
+  });
+
+  it('should down the quality if downvote is called', function () {
+    var idea = new Idea('Whale', 'Is blue.', 'genius');
+    idea.downvote();
+    assert.equal(idea.quality, 'plausible');
+    idea.downvote();
+    assert.equal(idea.quality, 'swill');
+    idea.downvote();
+    assert.equal(idea.quality, 'swill');
+  });
+
   // it('saveNewTitle should be a function', function() {
   //   var idea = new Idea();
   //   assert.isFunction(idea.saveNewTitle);
