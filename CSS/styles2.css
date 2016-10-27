@@ -38,11 +38,11 @@ textarea {
 }
 
 textarea::-webkit-input-placeholder {
-  padding-top: 5px;
+  padding-top: -10px;
 }
 
 .titleInput, .bodyInput, .search {
-  height: 30px;
+  height: 40px;
   width: 500px;
   margin: 5px 0;
   order: 2;
@@ -51,10 +51,13 @@ textarea::-webkit-input-placeholder {
 
 .bodyInput {
   order: 3;
+  padding-top: 10px;
+  height: 30px;
+  width: 497px;
 }
 
 .save-btn {
-  height: 40px;
+  height: 43px;
   width: 505px;
   margin: 10px 0 30px;
   order: 4;
