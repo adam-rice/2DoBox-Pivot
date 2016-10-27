@@ -16,13 +16,13 @@ $(document).ready (function() {
     return (`
       <li class="idea-card" id=${this.id}>
         <header class="bottom-header">
-        <button class="destroy-button"></button>
+        <button class="destroy-btn"></button>
         <h3 contenteditable="true">${this.title}</h3>
         </header>
-        <p class="body" contenteditable="true">${this.body}</p>
+        <p class="card-body" contenteditable="true">${this.body}</p>
         <footer>
-          <button id="upvote" class="upvote"></button>
-          <button id="downvote" class="downvote"></button>
+          <button id="upvote" class="upvote-btn"></button>
+          <button id="downvote" class="downvote-btn"></button>
           <h4 class="quality">quality:<span class="quality-change"> ${this.quality}</span></h4>
         </footer>
       </li>
@@ -120,7 +120,7 @@ $(document).ready (function() {
     }
   });
 
-  ideaSection.on('click', '.destroy-button, .upvote, .downvote', function() {
+  ideaSection.on('click', '.destroy-btn, .upvote-btn, .downvote-btn', function() {
     var id = $(this).closest('.idea-card').attr('id');
     var find = ideaBoss.find(id);
     if (this.id === 'upvote') {
