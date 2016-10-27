@@ -12,14 +12,11 @@ header {
   height: 50px;
   margin: 20px 0;
   order: 1;
-}
-
-.idea-logo {
   color: #00A79D;
 }
 
 .box-logo {
-  color: #6D6E71
+  color: #6D6E71;
 }
 
 input, textarea {
@@ -189,7 +186,7 @@ footer {
 }
 
 @media screen and (max-width: 550px) {
-  .top-panel, .bottom-panel, .body {
+  .top-panel, .bottom-panel, .card-body {
     width: 100%;
   }
 

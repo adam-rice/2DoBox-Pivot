@@ -16,14 +16,16 @@ $(document).ready (function() {
     return (`
       <li class="idea-card" id=${this.id}>
         <header class="bottom-header">
-        <button class="destroy-btn"></button>
-        <h3 contenteditable="true">${this.title}</h3>
+          <button class="destroy-btn"></button>
+          <h3 contenteditable="true">${this.title}</h3>
         </header>
         <p class="card-body" contenteditable="true">${this.body}</p>
         <footer>
           <button id="upvote" class="upvote-btn"></button>
           <button id="downvote" class="downvote-btn"></button>
-          <h4 class="quality">quality:<span class="quality-change"> ${this.quality}</span></h4>
+          <h4 class="quality">
+            quality:<span class="quality-change"> ${this.quality}</span>
+          </h4>
         </footer>
       </li>
       `);
@@ -37,7 +39,7 @@ $(document).ready (function() {
     var quality = this.quality;
     if (quality === 'swill') {
       this.quality = 'plausible';
-    } else if (quality === 'plausible') {
+      } else if (quality === 'plausible') {
       this.quality = 'genius';
     }
     ideaBoss.store();
@@ -47,7 +49,7 @@ $(document).ready (function() {
     var quality = this.quality;
     if (quality === 'genius') {
       this.quality = 'plausible';
-    } else if (quality === 'plausible') {
+      } else if (quality === 'plausible') {
       this.quality = 'swill';
     }
     ideaBoss.store();
@@ -131,7 +133,7 @@ $(document).ready (function() {
     var find = ideaBoss.find(id);
     if (this.id === 'upvote') {
       find.upvote();
-    } else if (this.id === 'downvote') {
+      } else if (this.id === 'downvote') {
       find.downvote();
     } else find.remove();
   });
@@ -190,7 +192,7 @@ $(document).ready (function() {
     if (event.target.nodeName === 'H3') {
       var newTitle = selector.closest('h3').text();
       ideaBoss.find(id).saveNewTitle(newTitle);
-    } else if (event.target.nodeName === 'P') {
+      } else if (event.target.nodeName === 'P') {
       var newBody = selector.closest('p').text();
       ideaBoss.find(id).saveNewBody(newBody);
     }
