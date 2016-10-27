@@ -114,9 +114,15 @@ $(document).ready (function() {
   });
 
   bodyInput.on('keyup', function(key) {
+    var title = titleInput.val();
+    var body = bodyInput.val();
     if (key.which === 13) {
-      addNewIdeaToIdeaBoss();
-      clearInputFields();
+      if (title === "" || body === "") {
+        return false;
+        } else {
+        addNewIdeaToIdeaBoss();
+        clearInputFields();
+      }
     }
   });
 
@@ -163,8 +169,8 @@ $(document).ready (function() {
     var title = titleInput.val();
     var body = bodyInput.val();
     if (title === "" || body === "") {
-      saveButton.attr('disabled', true); }
-    else if (title !== "" && body !== "") {
+      saveButton.attr('disabled', true);
+      } else if (title !== "" && body !== "") {
       saveButton.attr('disabled', false);
     }
   }
