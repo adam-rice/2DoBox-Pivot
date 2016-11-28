@@ -1,7 +1,7 @@
 {
-  "name": "foundations",
+  "name": "Project",
   "version": "1.0.0",
-  "description": "Practice programs for mastering the basics of JavaScript",
+  "description": "Turing project.",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
