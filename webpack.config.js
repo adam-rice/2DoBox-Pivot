@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 const path = require('path');
 
 module.exports = {
@@ -9,4 +11,4 @@ module.exports = {
     path: __dirname,
     filename: "[name].bundle.js"
   }
-}
+};

@@ -40,7 +40,7 @@ textarea::-webkit-input-placeholder {
   padding-top: -10px;
 }
 
-.titleInput, .bodyInput, .search {
+.task-title-class, .task-body-class, .search-class {
   height: 40px;
   width: 500px;
   margin: 5px 0;
@@ -48,14 +48,14 @@ textarea::-webkit-input-placeholder {
   outline: none;
 }
 
-.bodyInput {
+.task-body-class {
   order: 3;
   padding-top: 10px;
   height: 30px;
   width: 497px;
 }
 
-.save-btn {
+.save-btn-class {
   height: 43px;
   width: 505px;
   margin: 10px 0 30px;
@@ -66,7 +66,7 @@ textarea::-webkit-input-placeholder {
   outline: none;
 }
 
-.save-btn:hover {
+.save-btn-class:hover {
   background-color: #92231b;
   cursor: pointer;
 }
@@ -77,12 +77,12 @@ textarea::-webkit-input-placeholder {
   flex-direction: column;
 }
 
-.search {
+.search-class {
   margin: 30px;
   outline: none;
 }
 
-#ideaSection {
+#task-section {
   order: 3;
 }
 
@@ -192,7 +192,7 @@ footer {
     width: 100%;
   }
 
-  h3, .idea-output, .save-btn, .search {
+  h3, .idea-output, .save-btn-class, .search-class {
     width: 300px;
   }
 
@@ -200,11 +200,11 @@ footer {
     max-width: 200px;
   }
 
-  .titleInput, .bodyInput, .idea-card {
+  .task-title-class, .task-body-class, .idea-card {
     width: 300px;
   }
 
-  .bodyInput {
+  .task-body-class {
     height: 100px;
   }
 }
