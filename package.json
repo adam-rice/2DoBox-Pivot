@@ -4,10 +4,12 @@
   "description": "Turing project.",
   "main": "index.js",
   "scripts": {
-  "test": "mocha",
-  "babel": "babel --presets es2015 js/main.js -o build/main.bundle.js",
-  "start": "webpack-dev-server --hot --inline"
+    "test": "mocha",
+    "babel": "babel --presets es2015 js/main.js -o build/main.bundle.js",
+    "start": "webpack-dev-server --hot --inline",
+    "build": "webpack"
   },
+
   "author": "Turing School",
   "license": "MIT",
   "devDependencies": {
