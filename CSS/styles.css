@@ -180,6 +180,17 @@ footer {
   background: url(../Images/delete-hover.svg);
 }
 
+.complete-btn {
+  border-radius: 4px;
+  border: none;
+  background-color: #D3D3D3;
+  color: #FFFFFF;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  float: right;
+  margin: 4px 7px 0 0;
+}
+
 
 .upvote-btn {
   background: url(../Images/upvote.svg);
