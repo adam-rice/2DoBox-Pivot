@@ -166,7 +166,7 @@ footer {
   outline: none;
 }
 
-.destroy-btn:hover, .upvote-btn:hover, .downvote-btn:hover {
+.destroy-btn:hover, .upvote-btn:hover, .downvote-btn:hover, .complete-btn {
   cursor: pointer;
 }
 
@@ -191,6 +191,9 @@ footer {
   margin: 4px 7px 0 0;
 }
 
+.complete-btn:hover {
+  background-color: #EDBE91;
+}
 
 .upvote-btn {
   background: url(../Images/upvote.svg);
