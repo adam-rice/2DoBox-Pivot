@@ -1,5 +1,6 @@
 /*#70b8d1 : #84452e*/
 
+
 .top-panel {
   align-items: center;
   background-color: #4f0d13;
@@ -30,6 +31,14 @@ input, textarea {
 input, textarea, button {
   font-family: 'Open Sans', sans-serif;
   font-size: 18px;
+}
+
+button {
+  text-indent: -99999px;
+}
+
+label {
+  text-indent: -99999px;
 }
 
 textarea {
