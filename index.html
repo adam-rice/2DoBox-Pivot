@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,17 +10,18 @@
   </head>
   <body>
     <section class="top-panel">
-        <header class="top-header">
-          <h1>2Do</span><span class="box-logo">Box</h1>
-        </header>
-          <input id="task-title" class="task-title-class" type="text" name="name-task-title" placeholder="Title"/>
-          <textarea id="task-body" class="task-body-class" type="text" name="name-task-body" placeholder="Task"></textarea>
-          <button id="save-btn" class="save-btn-class" type="button" name="save-button" disabled>save</button>
+      <header class="top-header">
+        <h1>2Do</span><span class="box-logo">Box</h1>
+      </header>
+        <label for="task-title">Task Title</label><input id="task-title" class="task-title-class" type="text" name="name-task-title" placeholder="Title"/>
+        <article class="title-counter"><figure class="title-counter-display"></figure></article>
+        <label for="task-body">Task Body</label><textarea id="task-body" class="task-body-class" type="text" name="name-task-body" placeholder="Task"></textarea>
+        <article class="body-counter"><figure class="body-counter-display"></figure></article>
+        <button id="save-btn" class="save-btn-class" type="button" name="save-button" disabled>save</button>
     </section>
     <section class="bottom-panel">
-      <input id ="search" class="search-class" name="search-input" placeholder="Search"/>
-      <ul id="task-section">
-      </ul>
+      <label for="search">Search</label><input id ="search" class="search-class" name="search-input" placeholder="Search"/>
+      <ul id="task-section"></ul>
     </section>
     <script src="main.bundle.js"/></script>
   </body>
