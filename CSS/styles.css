@@ -102,11 +102,11 @@ h2 {
   font-family: "Roboto Slab", serif;
   font-weight: bolder;
   display: inline-block;
-  margin-right: 10px;
+  margin-right: 8px;
 }
 
 .filters {
-  border: 2px solid pink;
+  /*border: 2px solid pink;*/
   margin-top: 10px;
   width: 70%;
   height: 30px;
