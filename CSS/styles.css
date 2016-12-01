@@ -147,7 +147,7 @@ footer {
   width: 500px;
 }
 
-#card-body {
+.card-body {
   color: #6D6E71;
   font-family: 'Open Sans', sans-serif;
   font-size: 18px;
@@ -184,7 +184,7 @@ footer {
   border-radius: 4px;
   border: none;
   background-color: #D3D3D3;
-  color: #FFFFFF;
+  color: #000000;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
   float: right;
@@ -222,7 +222,7 @@ footer {
 }
 
 @media screen and (max-width: 550px) {
-  .top-panel, .bottom-panel, #card-body {
+  .top-panel, .bottom-panel, .card-body {
     width: 100%;
   }
 
