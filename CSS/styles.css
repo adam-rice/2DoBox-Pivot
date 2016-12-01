@@ -93,8 +93,40 @@ textarea::-webkit-input-placeholder {
 }
 
 .search-class {
-  margin: 30px;
+  margin: 20px 0 30px 0;
   outline: none;
+}
+
+h2 {
+  color: #6D6E71;
+  font-family: "Roboto Slab", serif;
+  font-weight: bolder;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.filters {
+  border: 2px solid pink;
+  margin-top: 10px;
+  width: 70%;
+  height: 30px;
+  text-align: center;
+}
+
+.filter-btn {
+  border-radius: 4px;
+  border: none;
+  background-color: #D3D3D3;
+  color: #FFFFFF;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  display: inline-block;
+  margin: 4px 7px 0 0;
+  outline: none;
+}
+
+.filter-btn:hover {
+  background-color: #EDBE91;
 }
 
 #task-section {
@@ -166,7 +198,7 @@ footer {
   outline: none;
 }
 
-.destroy-btn:hover, .upvote-btn:hover, .downvote-btn:hover, .complete-btn {
+.destroy-btn:hover, .upvote-btn:hover, .downvote-btn:hover, .complete-btn, .filter-btn {
   cursor: pointer;
 }
 
@@ -189,6 +221,7 @@ footer {
   font-size: 14px;
   float: right;
   margin: 4px 7px 0 0;
+  outline: none;
 }
 
 .complete-btn:hover {
@@ -232,6 +265,10 @@ footer {
 
   h3 {
     max-width: 200px;
+  }
+
+  .search-class {
+    margin: 40px 0 30px 0;
   }
 
   .task-title-class, .task-body-class, .task-card {
