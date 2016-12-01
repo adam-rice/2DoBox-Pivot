@@ -147,7 +147,7 @@ footer {
   width: 500px;
 }
 
-.card-body {
+#card-body {
   color: #6D6E71;
   font-family: 'Open Sans', sans-serif;
   font-size: 18px;
@@ -213,8 +213,16 @@ footer {
   background: url(../Images/downvote-hover.svg);
 }
 
+.true {
+  text-decoration: line-through;;
+}
+
+.false {
+  text-decoration: none;
+}
+
 @media screen and (max-width: 550px) {
-  .top-panel, .bottom-panel, .card-body {
+  .top-panel, .bottom-panel, #card-body {
     width: 100%;
   }
 
