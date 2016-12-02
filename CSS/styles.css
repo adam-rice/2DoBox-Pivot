@@ -102,7 +102,7 @@ h2 {
   margin-right: 8px;
 }
 
-.filters {
+#filters {
   /*border: 2px solid pink;*/
   margin-top: 10px;
   width: 70%;
@@ -223,6 +223,10 @@ footer {
 
 .complete-btn:hover {
   background-color: #EDBE91;
+}
+
+.hide {
+  display: none;
 }
 
 .upvote-btn {
