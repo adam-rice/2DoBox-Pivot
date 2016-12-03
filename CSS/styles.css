@@ -29,7 +29,7 @@ input, textarea, button {
   font-size: 18px;
 }
 
-.destroy-btn, .upvote-btn, .downvote-btn {
+.destroy, .upvote, .downvote {
   text-indent: -99999px;
 }
 
@@ -176,7 +176,7 @@ footer {
   width: 500px;
 }
 
-#card-body {
+.card-body {
   color: #6D6E71;
   font-family: 'Open Sans', sans-serif;
   font-size: 18px;
@@ -187,7 +187,7 @@ footer {
   width: 500px;
 }
 
-.destroy-btn, .upvote-btn, .downvote-btn {
+.destroy, .upvote, .downvote {
   border: none;
   color: none;
   height: 30px;
@@ -195,25 +195,25 @@ footer {
   outline: none;
 }
 
-.destroy-btn:hover, .upvote-btn:hover, .downvote-btn:hover, .complete-btn, .filter-btn {
+.destroy:hover, .upvote:hover, .downvote:hover, .complete, .filter-btn {
   cursor: pointer;
 }
 
-.destroy-btn {
+.destroy {
   background: url(../Images/delete.svg);
   float: right;
   position: static;
 }
 
-.destroy-btn:hover {
+.destroy:hover {
   background: url(../Images/delete-hover.svg);
 }
 
-.complete-btn {
+.complete {
   border-radius: 4px;
   border: none;
   background-color: #D3D3D3;
-  color: #FFFFFF;
+  color: #000000;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
   float: right;
@@ -221,7 +221,7 @@ footer {
   outline: none;
 }
 
-.complete-btn:hover {
+.complete:hover {
   background-color: #EDBE91;
 }
 
@@ -229,21 +229,21 @@ footer {
   display: none;
 }
 
-.upvote-btn {
+.upvote {
   background: url(../Images/upvote.svg);
   margin-right: 10px;
 }
 
-.upvote-btn:hover {
+.upvote:hover {
   background: url(../Images/upvote-hover.svg);
 }
 
-.downvote-btn {
+.downvote {
   background: url(../Images/downvote.svg);
   margin: 0 20px 0 10px;
 }
 
-.downvote-btn:hover {
+.downvote:hover {
   background: url(../Images/downvote-hover.svg);
 }
 
@@ -252,11 +252,11 @@ footer {
 }
 
 @media screen and (max-width: 550px) {
-  .top-panel, .bottom-panel, #card-body {
+  .top-panel, .bottom-panel, .card-body {
     width: 100%;
   }
 
-  h3, .idea-output, .save-btn-class, .search-class {
+  h3, .idea-output, .save-btn-class, .search-class, #load-more {
     width: 300px;
   }
 
