@@ -256,7 +256,7 @@ footer {
     width: 100%;
   }
 
-  h3, .idea-output, .save-btn-class, .search-class {
+  h3, .idea-output, .save-btn-class, .search-class, #load-more {
     width: 300px;
   }
 
