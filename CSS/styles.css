@@ -68,7 +68,7 @@ textarea::-webkit-input-placeholder {
   text-align: center;
 }
 
-.save-btn-class {
+.save-btn-class, #load-more {
   height: 43px;
   width: 505px;
   margin: 10px 0 40px 0;
@@ -78,7 +78,7 @@ textarea::-webkit-input-placeholder {
   outline: none;
 }
 
-.save-btn-class:hover {
+.save-btn-class:hover, #load-more:hover {
   background-color: #E2974F;
   cursor: pointer;
 }
