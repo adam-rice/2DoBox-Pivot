@@ -2,44 +2,35 @@ const assert = require('chai').assert;
 const webdriver = require('selenium-webdriver');
 const test = require('selenium-webdriver/testing');
 
-
 test.describe('testing idea box', ()=> {
-  // beforeEach ( ()=> {
-  //   const driver = new webdriver.Builder().forBrowser('chrome').build();
-  //   driver.get('http://localhost:8080');
-  // });
+  let driver;
+  beforeEach ( ()=> {
+    driver = new webdriver.Builder().forBrowser('chrome').build();
+    driver.get('http://localhost:8080');
+  });
 
-  // afterEach( ()=> {
-  //   driver.quit();
-  // });
+  afterEach( ()=> {
+    driver.quit();
+  });
 
   test.it('should allow Adam and Devin to add a sweet new title and description', ()=> {
-    const driver = new webdriver.Builder().forBrowser('chrome').build();
-    driver.get('http://localhost:8080');
-
     const title = driver.findElement({name: 'name-task-title'});
     const description = driver.findElement({name: 'name-task-body'});
 
     title.sendKeys('this is our sweet new title').then( ()=> {
       return title.getAttribute('value');
     }).then( (value)=> {
-      console.log(value);
       assert.equal(value, 'this is our sweet new title');
     });
 
     description.sendKeys('this is our sweet new description').then ( ()=> {
       return description.getAttribute('value');
     }).then( (value)=> {
-      console.log(value);
       assert.equal(value, 'this is our sweet new description');
     })
-    driver.quit();
   });
 
   test.it('should allow Adam and Devin to to save a new task', ()=> {
-    const driver = new webdriver.Builder().forBrowser('chrome').build();
-    driver.get('http://localhost:8080');
-
     const title = driver.findElement({name: 'name-task-title'});
     const description = driver.findElement({name: 'name-task-body'});
     const saveButton = driver.findElement({name: 'save-button'});
@@ -54,13 +45,9 @@ test.describe('testing idea box', ()=> {
       assert.include(text, 'this is our sweet new title');
       assert.include(text, 'this is our sweet new description');
     })
-    driver.quit();
   });
 
   test.it('should be a sweet new task with a default importance of normal', ()=> {
-    const driver = new webdriver.Builder().forBrowser('chrome').build();
-    driver.get('http://localhost:8080');
-
     const title = driver.findElement({name: 'name-task-title'});
     const description = driver.findElement({name: 'name-task-body'});
     const saveButton = driver.findElement({name: 'save-button'});
@@ -69,12 +56,11 @@ test.describe('testing idea box', ()=> {
     description.sendKeys('this is our sweet new description');
     saveButton.click();
 
-      const normalTasks = driver.findElement({name: 'importance'}).then( (importance)=> {
-        return importance.getText();
+    const normalTasks = driver.findElement({name: 'importance'}).then( (importance)=> {
+      return importance.getText();
       }).then( (text)=> {
-      assert.equal(text, 'normal');
+        assert.equal(text, 'normal');
       })
-    driver.quit();
-  })
+  });
 
 });
