@@ -44,164 +44,107 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/*jshint esversion: 6 */
+	__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../CSS/reset.scss\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../CSS/styles.scss\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	$ = __webpack_require__(1);
+	let Task = __webpack_require__(2);
+	let taskManager = __webpack_require__(2);
 
-	var titleInput = $('#task-title');
-	var bodyInput = $('#task-body');
-	var saveButton = $('#save-btn');
-	var taskSection = $('#task-section');
-	var search = $('#search');
+	const titleInput = $('#task-title');
+	const bodyInput = $('#task-body');
+	const saveBtn = $('#save-btn');
+	const taskSection = $('#task-section');
+	const filterSection = $('#filters');
+	const search = $('#search');
 
-	$(document).ready (function() {
-	  function Task(title, body, quality, id) {
-	    this.title = title;
-	    this.body = body;
-	    this.quality = quality || "swill";
-	    this.id = id || Date.now();
+	saveBtn.on('click', function() {
+	  makeNewTask();
+	  taskManager.render();
+	  titleInput.focus();
+	  showloadMoreBtn();
+	});
+
+	filterSection.on('click', '#critical, #high, #normal, #low, #none', function() {
+	  let id = $(this).attr('id');
+	  taskManager.showTasksFilterSelection(id);
+	  taskManager.hideCompletedTask();
+	});
+
+	filterSection.on('click', '#complete-filter-btn', function() {
+	  taskManager.hideCompletedTask();
+	  taskManager.showCompletedTasks();
+	});
+
+	filterSection.on('click', '#reset-filter-btn', function() {
+	  taskSection.html('');
+	  taskManager.render();
+	  taskManager.hideCompletedTask();
+	});
+
+	bodyInput.on('keyup', function(key) {
+	  let title = titleInput.val();
+	  let body = bodyInput.val();
+	  if (key.which === 13) {
+	    if (title === "" || body === "") {
+	      return false;
+	      } else {
+	        makeNewTask();
+	    }
 	  }
+	});
 
-	  Task.prototype.toHTML = function() {
-	    return (`
-	      <li class="task-card" id=${this.id}>
-	        <header class="bottom-header">
-	          <button class="destroy-btn">Delete</button>
-	          <h3 contenteditable="true">${this.title}</h3>
-	        </header>
-	        <p class="card-body" contenteditable="true">${this.body}</p>
-	        <footer>
-	          <button id="upvote" class="upvote-btn">Upv</button>
-	          <button id="downvote" class="downvote-btn">Downvote</button>
-	          <h4 class="quality">
-	            quality:<span class="quality-change"> ${this.quality}</span>
-	          </h4>
-	        </footer>
-	      </li>
-	      `);
-	    };
+	$('#load-more').on('click', function() {
+	  if (taskManager.taskArray.length === 0) {
+	    $('#load-more').html('You don\'t have any 2Dos yet');
+	  } else if (taskManager.taskArray.length <= 10) {
+	    $('#load-more').html('You don\'t have any 2Dos hidden');
+	  } else {
+	    taskManager.render();
+	    taskManager.hideCompletedTask();
+	    $('#load-more').hide();
+	};
 
-	  Task.prototype.remove = function(id) {
-	    taskManager.remove(this.id);
-	  };
-
-	  Task.prototype.upvote = function() {
-	    var quality = this.quality;
-	    if (quality === 'swill') {
-	      this.quality = 'plausible';
-	      } else if (quality === 'plausible') {
-	      this.quality = 'genius';
-	    }
-	    taskManager.store();
-	  };
-
-	  Task.prototype.downvote = function() {
-	    var quality = this.quality;
-	    if (quality === 'genius') {
-	      this.quality = 'plausible';
-	      } else if (quality === 'plausible') {
-	      this.quality = 'swill';
-	    }
-	    taskManager.store();
-	  };
-
-	  Task.prototype.saveNewTitle = function (target) {
-	    this.title = target;
-	    taskManager.store();
-	  };
-
-	  Task.prototype.saveNewBody = function (target) {
-	    this.body = target;
-	    taskManager.store();
-	  };
-
-	  var taskManager = {
-	    taskArray: [],
-	    add: function(title, body) {
-	      this.taskArray.push(new Task(title, body));
-	      this.store();
-	    },
-
-	    find: function(id) {
-	      id = parseInt(id);
-	      return this.taskArray.find( function(task) {
-	        return task.id === id;
-	      });
-	    },
-
-	    render: function () {
-	      taskSection.html('');
-	      for (var i = 0; i < this.taskArray.length; i++) {
-	        var task = this.taskArray[i];
-	        taskSection.prepend(task.toHTML());
-	      }
-	    },
-
-	    store: function() {
-	      localStorage.setItem('tasks', JSON.stringify(this.taskArray));
-	      this.render();
-	    },
-
-	    retrieve: function() {
-	      var retrievedTasks = JSON.parse(localStorage.getItem('tasks'));
-	      if (retrievedTasks) {
-	        for (i = 0; i < retrievedTasks.length; i++) {
-	          var task = retrievedTasks[i];
-	          this.taskArray.push(new Task(task.title, task.body, task.quality, task.id));
-	        }
-	      }
-	    },
-
-	    remove: function(id) {
-	      this.taskArray = this.taskArray.filter(function(task) {
-	        return task.id !== id;
-	      });
-	      this.store();
-	    }
-	  }; //end of taskManager
-
-	  saveButton.on('click', function() {
-	    addNewTaskToTaskManager();
-	    clearInputFields();
-	  });
-
-	  bodyInput.on('keyup', function(key) {
-	    var title = titleInput.val();
-	    var body = bodyInput.val();
-	    if (key.which === 13) {
-	      if (title === "" || body === "") {
-	        return false;
-	        } else {
-	        addNewTaskToTaskManager();
-	        clearInputFields();
-	      }
-	    }
-	  });
-
-	  taskSection.on('click', '.destroy-btn, .upvote-btn, .downvote-btn', function() {
-	    var id = $(this).closest('.task-card').attr('id');
-	    var find = taskManager.find(id);
-	    if (this.id === 'upvote') {
+	  taskSection.on('click', '.destroy, .upvote, .downvote, .complete', function() {
+	    let id = $(this).attr('class');
+	    let card = $(this).closest('.task-card').attr('id');
+	    let find = taskManager.find(card);
+	    if (id === 'upvote') {
 	      find.upvote();
-	      } else if (this.id === 'downvote') {
+	    } else if (id === 'downvote') {
 	      find.downvote();
-	    } else find.remove();
+	    } else if (id === 'complete') {
+	      find.toggleState();
+	      $(this).siblings('.false').addClass('strikethrough');
+	      $(this).closest('.false').addClass('strikethrough');
+	      $(this).remove();
+	    } else if (id === 'destroy') {
+	      find.remove();
+	    }
 	  });
 
 	  taskSection.on('keydown click', 'h3, p', function(key) {
-	    var id = $(this).closest('.task-card').attr('id');
+	    let id = $(this).closest('.task-card').attr('id');
 	    $(this).addClass('changing-innertext');
 	    if (key.which === 13) {
 	      replaceNodeText($(this), id);
 	    }
 	  });
 
-	  taskSection.on('blur', 'h3, p', function() {
-	    var id = $(this).closest('.task-card').attr('id');
+	  taskSection.on('blur', 'h3', function() {
+	    let id = $(this).closest(titleInput).attr('id');
+	    $(this).removeClass('changing-innertext');
+	    replaceNodeText($(this), id);
+	  });
+
+	  taskSection.on('blur', 'p', function() {
+	    let id = $(this).closest(bodyInput).attr('id');
 	     $(this).removeClass('changing-innertext');
 	     replaceNodeText($(this), id);
 	  });
 
 	  search.on("keyup", function() {
-	    var search = $(this).val();
+	    let search = $(this).val();
 	    $('h3:contains(' + search + ')').closest('.task-card').show();
 	    $('h3:not(:contains(' + search + '))').closest('.task-card').hide();
 	    $('p:contains(' + search + ')').closest('.task-card').show();
@@ -209,46 +152,90 @@
 
 	  titleInput.keyup( function() {
 	    enableSave();
+	    charCounterTitle();
 	  });
 
 	  bodyInput.keyup( function ()  {
 	    enableSave();
+	    charCounterBody();
 	  });
 
 	  function enableSave() {
-	    var title = titleInput.val();
-	    var body = bodyInput.val();
-	    if (title === "" || body === "") {
-	      saveButton.attr('disabled', true);
-	      } else if (title !== "" && body !== "") {
-	      saveButton.attr('disabled', false);
+	    let title = titleInput.val();
+	    let body = bodyInput.val();
+	    let titleCharCount = title.length;
+	    let bodyCharCount = body.length;
+	    if (title === "" || body === "" || titleCharCount > 120 || bodyCharCount > 120) {
+	      saveBtn.attr('disabled', true);
+	    } else if (title !== "" && body !== "" && titleCharCount <=120 && bodyCharCount <=120) {
+	      saveBtn.attr('disabled', false);
 	    }
 	  }
 
 	  function addNewTaskToTaskManager() {
 	    taskManager.add(titleInput.val(), bodyInput.val());
+	    // $('#load-more').hide();
 	  }
+	});
 
-	  function clearInputFields() {
-	    titleInput.val('');
-	    bodyInput.val('');
-	    bodyInput.blur();
-	    saveButton.attr('disabled', true);
-	  }
+	function clearInputFields() {
+	  titleInput.val('');
+	  bodyInput.val('');
+	  bodyInput.blur();
+	  saveBtn.attr('disabled', true);
+	}
 
-	  function replaceNodeText(selector, id) {
-	    if (event.target.nodeName === 'H3') {
-	      var newTitle = selector.closest('h3').text();
-	      taskManager.find(id).saveNewTitle(newTitle);
-	      } else if (event.target.nodeName === 'P') {
-	      var newBody = selector.closest('p').text();
-	      taskManager.find(id).saveNewBody(newBody);
-	    }
+	function replaceNodeText(selector, id) {
+	  let newText = taskManager.find(id);
+	  if (event.target.nodeName === 'H3') {
+	    let newTitle = selector.closest('h3').text();
+	    newText.saveNewTitle(newTitle);
+	    } else if (event.target.nodeName === 'P') {
+	    let newBody = selector.closest('p').text();
+	    newText.saveNewBody(newBody);
 	  }
+	}
+
+	function charCounterTitle() {
+	  let title = titleInput.val();
+	  let $titleCounterDisplay = $('.title-counter-display');
+	  if (title.length <= 0) {
+	    $titleCounterDisplay.hide();
+	  } else {
+	    $titleCounterDisplay.show().html(title.length+' (max 120)');
+	  }
+	}
+
+	function charCounterBody() {
+	  let body = bodyInput.val();
+	  let $bodyCounterDisplay = $('.body-counter-display');
+	  if (body.length <= 0) {
+	    $bodyCounterDisplay.hide();
+	  } else {
+	    $bodyCounterDisplay.show().html(body.length+' (max 120)');
+	  }
+	}
+
+	function clearCharCounts() {
+	  let $bodyCounterDisplay = $('.body-counter-display');
+	  let $titleCounterDisplay = $('.title-counter-display');
+	  $titleCounterDisplay.html('');
+	  $bodyCounterDisplay.html('');
+	}
+
+	function makeNewTask() {
+	  addNewTaskToTaskManager();
+	  clearInputFields();
+	  clearCharCounts();
+	}
+
+	function showloadMoreBtn() {
+	  $('#load-more').show()
+	};
 
 	taskManager.retrieve();
 	taskManager.render();
-	});
+	taskManager.hideCompletedTask();
 
 
 /***/ },
@@ -10475,6 +10462,228 @@
 
 	return jQuery;
 	} );
+
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*jshint esversion: 6 */
+	$ = __webpack_require__(1);
+
+	const taskSection = $('#task-section');
+
+	function Task(title, body, importance, id, completed) {
+	  this.title = title;
+	  this.body = body;
+	  this.importance = importance || "normal";
+	  this.id = id || Date.now();
+	  this.completed = completed || false;
+	}
+
+	Task.prototype.toHTML = function() {
+	  let completed = this.completed;
+	  if (completed === true) {
+	    completed = 'strikethrough';
+	  }
+	  return (`
+	    <li class="task-card ${this.completed}" id=${this.id}>
+	      <header class="bottom-header">
+	        <h3 contenteditable="true" class="${completed} ${this.completed}">${this.title}</h3>
+	        <button class="destroy">Delete</button>
+	        <button class="complete" name="complete">Complete</button>
+	      </header>
+	      <p contenteditable="true" class="card-body ${completed} ${this.completed}">${this.body}</p>
+	      <footer>
+	        <button class="upvote">upvote</button><button class="downvote">downvote</button>
+	        <h4 tabindex="0">
+	          importance:<span name="importance" class="importance-change" tabindex="0"> ${this.importance}</span>
+	        </h4>
+	      </footer>
+	    </li>
+	    `);
+	  };
+
+	  Task.prototype.completedToHTML = function() {
+	    return (`
+	      <li class="task-card ${this.completed}" id=${this.id}>
+	        <header class="bottom-header">
+	          <h3 contenteditable="true" class="strikethrough ${this.completed}">${this.title}</h3>
+	          <button class="destroy">Delete</button>
+	        </header>
+	        <p contenteditable="true" class="card-body strikethrough ${this.completed}">${this.body}</p>
+	        <footer>
+	          <button class="upvote">upvote</button><button class="downvote">downvote</button>
+	          <h4 tabindex="0">
+	            importance:<span name="importance" class="importance-change" tabindex="0"> ${this.importance}</span>
+	          </h4>
+	        </footer>
+	      </li>
+	      `);
+	    };
+
+	Task.prototype.remove = function(id) {
+	  taskManager.remove(this.id);
+	  taskManager.hideCompletedTask();
+	  showloadMoreBtn();
+	};
+
+	Task.prototype.upvote = function() {
+	  let importance = this.importance;
+	  if (importance === 'none') {
+	    this.importance = 'low';
+	  } else if (importance === 'low') {
+	    this.importance = 'normal';
+	  } else if (importance === 'normal') {
+	    this.importance = 'high';
+	  } else if (importance === 'high') {
+	    this.importance = 'critical';
+	  }
+	  taskManager.store();
+	  taskManager.render();
+	  taskManager.hideCompletedTask();
+	  showloadMoreBtn();
+	};
+
+	Task.prototype.downvote = function() {
+	  let importance = this.importance;
+	  if (importance === 'critical') {
+	    this.importance = 'high';
+	  } else if (importance === 'high') {
+	    this.importance = 'normal';
+	  } else if (importance === 'normal') {
+	    this.importance = 'low';
+	  } else if (importance === 'low') {
+	    this.importance = 'none';
+	  }
+	  taskManager.store();
+	  taskManager.render();
+	  taskManager.hideCompletedTask();
+	  showloadMoreBtn();
+	};
+
+	Task.prototype.toggleState = function() {
+	  if (this.completed === false) {
+	    this.completed = true;
+	  } else if (this.completed === true) {
+	    this.completed = false;
+	  }
+	  taskManager.store();
+	};
+
+	Task.prototype.saveNewTitle = function (target) {
+	  this.title = target;
+	  taskManager.store();
+	  taskManager.render();
+	  taskManager.hideCompletedTask();
+	};
+
+	Task.prototype.saveNewBody = function (target) {
+	  this.body = target;
+	  taskManager.store();
+	  taskManager.render();
+	  taskManager.hideCompletedTask();
+	};
+
+	const taskManager = {
+	  taskArray: [],
+	  // completedTaskArray: [],
+	  add: function(title, body) {
+	    this.taskArray.push(new Task(title, body));
+	    this.store();
+	    this.render();
+	    this.hideCompletedTask();
+	  },
+
+	  find: function(id) {
+	    id = parseInt(id);
+	    return this.taskArray.find( function(task) {
+	      return task.id === id;
+	    });
+	  },
+
+	  render: function () {
+	    taskSection.html('');
+	    let sliced = this.taskArray.slice();
+	    if(sliced.length > 10) {
+	      sliced = sliced.splice(sliced.length-10 , sliced.length-1);
+	      for (let i = 0; i < sliced.length; i++) {
+	      task = sliced[i];
+	      taskSection.prepend(task.toHTML());
+	      }
+	    } else {
+	      for (let i = 0; i < sliced.length; i++) {
+	      task = sliced[i];
+	      taskSection.prepend(task.toHTML());
+	      }
+	    }
+	  },
+
+	  renderAll: function () {
+	    taskSection.html('');
+	    for (let i = 0; i < this.taskArray.length; i++) {
+	    task = this.taskArray[i];
+	    taskSection.prepend(task.toHTML());
+	    }
+	  },
+
+	  store: function() {
+	    localStorage.setItem('tasks', JSON.stringify(this.taskArray));
+	  },
+
+	  retrieve: function() {
+	    let retrievedTasks = JSON.parse(localStorage.getItem('tasks'));
+	    if (retrievedTasks) {
+	      for (i = 0; i < retrievedTasks.length; i++) {
+	        let task = retrievedTasks[i];
+	        this.taskArray.push(new Task(task.title, task.body, task.importance, task.id, task.completed));
+	      }
+	    }
+	  },
+
+	  remove: function(id) {
+	    this.taskArray = this.taskArray.filter(function(task) {
+	      return task.id !== id;
+	    });
+	    this.store();
+	    this.render();
+	  },
+
+	  hideCompletedTask: function() {
+	    for (let i = 0; i < this.taskArray.length; i++) {
+	      let task = this.taskArray[i];
+	      if (task.completed === true) {
+	        $('.true').hide();
+	      }
+	    }
+	  },
+
+	  showCompletedTasks: function() {
+	    for (let i = 0; i < this.taskArray.length; i++) {
+	      let task = this.taskArray[i];
+	      if (task.completed === true) {
+	        taskSection.prepend(task.completedToHTML());
+	      }
+	    }
+	  },
+
+	  showTasksFilterSelection: function(id) {
+	    taskSection.html('');
+	    for (let i = 0; i < this.taskArray.length; i++) {
+	      let task = this.taskArray[i];
+	      if (task.importance === id) {
+	        taskSection.prepend(task.toHTML());
+	      }
+	    }
+	  }
+	}; //end of taskManager
+
+	function showloadMoreBtn() {
+	  $('#load-more').show()
+	};
+
+	module.exports = Task;
+	module.exports = taskManager;
 
 
 /***/ }
