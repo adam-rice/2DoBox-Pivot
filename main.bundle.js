@@ -45,11 +45,11 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/*jshint esversion: 6 */
-	__webpack_require__(1);
-	__webpack_require__(5);
-	$ = __webpack_require__(13);
-	let Task = __webpack_require__(14);
-	let taskManager = __webpack_require__(14);
+	__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../CSS/reset.scss\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../CSS/styles.scss\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	$ = __webpack_require__(1);
+	let Task = __webpack_require__(2);
+	let taskManager = __webpack_require__(2);
 
 	const titleInput = $('#task-title');
 	const bodyInput = $('#task-body');
@@ -60,7 +60,9 @@
 
 	saveBtn.on('click', function() {
 	  makeNewTask();
-	  taskManager.renderOnlyTen();
+	  taskManager.render();
+	  titleInput.focus();
+	  showloadMoreBtn();
 	});
 
 	filterSection.on('click', '#critical, #high, #normal, #low, #none', function() {
@@ -76,7 +78,7 @@
 
 	filterSection.on('click', '#reset-filter-btn', function() {
 	  taskSection.html('');
-	  taskManager.renderOnlyTen();
+	  taskManager.render();
 	  taskManager.hideCompletedTask();
 	});
 
@@ -95,82 +97,86 @@
 	$('#load-more').on('click', function() {
 	  if (taskManager.taskArray.length === 0) {
 	    $('#load-more').html('You don\'t have any 2Dos yet');
+	  } else if (taskManager.taskArray.length <= 10) {
+	    $('#load-more').html('You don\'t have any 2Dos hidden');
 	  } else {
 	    taskManager.render();
 	    taskManager.hideCompletedTask();
 	    $('#load-more').hide();
-	  }
-	});
+	};
 
-	taskSection.on('click', '.destroy, .upvote, .downvote, .complete', function() {
-	  let id = $(this).attr('class');
-	  let card = $(this).closest('.task-card').attr('id');
-	  let find = taskManager.find(card);
-	  if (id === 'upvote') {
-	    find.upvote();
-	  } else if (id === 'downvote') {
-	    find.downvote();
-	  } else if (id === 'complete') {
-	    find.toggleState();
-	    $(this).closest('.false').addClass('strikethrough');
-	    $(this).remove();
-	  } else if (id === 'destroy') {
-	    find.remove();
-	  }
-	});
+	  taskSection.on('click', '.destroy, .upvote, .downvote, .complete', function() {
+	    let id = $(this).attr('class');
+	    let card = $(this).closest('.task-card').attr('id');
+	    let find = taskManager.find(card);
+	    if (id === 'upvote') {
+	      find.upvote();
+	    } else if (id === 'downvote') {
+	      find.downvote();
+	    } else if (id === 'complete') {
+	      find.toggleState();
+	      $(this).siblings('.false').addClass('strikethrough');
+	      $(this).closest('.false').addClass('strikethrough');
+	      $(this).remove();
+	    } else if (id === 'destroy') {
+	      find.remove();
+	    }
+	  });
 
-	taskSection.on('keydown click', 'h3, p', function(key) {
-	  let id = $(this).closest('.task-card').attr('id');
-	  $(this).addClass('changing-innertext');
-	  if (key.which === 13) {
+	  taskSection.on('keydown click', 'h3, p', function(key) {
+	    let id = $(this).closest('.task-card').attr('id');
+	    $(this).addClass('changing-innertext');
+	    if (key.which === 13) {
+	      replaceNodeText($(this), id);
+	    }
+	  });
+
+	  taskSection.on('blur', 'h3', function() {
+	    let id = $(this).closest(titleInput).attr('id');
+	    $(this).removeClass('changing-innertext');
 	    replaceNodeText($(this), id);
+	  });
+
+	  taskSection.on('blur', 'p', function() {
+	    let id = $(this).closest(bodyInput).attr('id');
+	     $(this).removeClass('changing-innertext');
+	     replaceNodeText($(this), id);
+	  });
+
+	  search.on("keyup", function() {
+	    let search = $(this).val();
+	    $('h3:contains(' + search + ')').closest('.task-card').show();
+	    $('h3:not(:contains(' + search + '))').closest('.task-card').hide();
+	    $('p:contains(' + search + ')').closest('.task-card').show();
+	  });
+
+	  titleInput.keyup( function() {
+	    enableSave();
+	    charCounterTitle();
+	  });
+
+	  bodyInput.keyup( function ()  {
+	    enableSave();
+	    charCounterBody();
+	  });
+
+	  function enableSave() {
+	    let title = titleInput.val();
+	    let body = bodyInput.val();
+	    let titleCharCount = title.length;
+	    let bodyCharCount = body.length;
+	    if (title === "" || body === "" || titleCharCount > 120 || bodyCharCount > 120) {
+	      saveBtn.attr('disabled', true);
+	    } else if (title !== "" && body !== "" && titleCharCount <=120 && bodyCharCount <=120) {
+	      saveBtn.attr('disabled', false);
+	    }
+	  }
+
+	  function addNewTaskToTaskManager() {
+	    taskManager.add(titleInput.val(), bodyInput.val());
+	    // $('#load-more').hide();
 	  }
 	});
-
-	taskSection.on('blur', 'h3', function() {
-	  let id = $(this).closest(titleInput).attr('id');
-	  $(this).removeClass('changing-innertext');
-	  replaceNodeText($(this), id);
-	});
-
-	taskSection.on('blur', 'p', function() {
-	  let id = $(this).closest(bodyInput).attr('id');
-	   $(this).removeClass('changing-innertext');
-	   replaceNodeText($(this), id);
-	});
-
-	search.on("keyup", function() {
-	  let search = $(this).val();
-	  $('h3:contains(' + search + ')').closest('.task-card').show();
-	  $('h3:not(:contains(' + search + '))').closest('.task-card').hide();
-	  $('p:contains(' + search + ')').closest('.task-card').show();
-	});
-
-	titleInput.keyup( function() {
-	  enableSave();
-	  charCounterTitle();
-	});
-
-	bodyInput.keyup( function ()  {
-	  enableSave();
-	  charCounterBody();
-	});
-
-	function enableSave() {
-	  let title = titleInput.val();
-	  let body = bodyInput.val();
-	  let titleCharCount = title.length;
-	  let bodyCharCount = body.length;
-	  if (title === "" || body === "" || titleCharCount > 120 || bodyCharCount > 120) {
-	    saveBtn.attr('disabled', true);
-	  } else if (title !== "" && body !== "" && titleCharCount <=120 && bodyCharCount <=120) {
-	    saveBtn.attr('disabled', false);
-	  }
-	}
-
-	function addNewTaskToTaskManager() {
-	  taskManager.add(titleInput.val(), bodyInput.val());
-	}
 
 	function clearInputFields() {
 	  titleInput.val('');
@@ -223,437 +229,17 @@
 	  clearCharCounts();
 	}
 
+	function showloadMoreBtn() {
+	  $('#load-more').show()
+	};
+
 	taskManager.retrieve();
-	taskManager.renderOnlyTen();
+	taskManager.render();
 	taskManager.hideCompletedTask();
 
 
 /***/ },
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(2);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(4)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js!./../node_modules/sass-loader/index.js!./reset.scss", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js!./../node_modules/sass-loader/index.js!./reset.scss");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(3)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "/* http://meyerweb.com/eric/tools/css/reset/\n   v2.0 | 20110126\n   License: none (public domain)\n*/\nhtml, body, div, span, applet, object, iframe,\nh1, h2, h3, h4, h5, h6, p, blockquote, pre,\na, abbr, acronym, address, big, cite, code,\ndel, dfn, em, img, ins, kbd, q, s, samp,\nsmall, strike, strong, sub, sup, tt, var,\nb, u, i, center,\ndl, dt, dd, ol, ul, li,\nfieldset, form, label, legend,\ntable, caption, tbody, tfoot, thead, tr, th, td,\narticle, aside, canvas, details, embed,\nfigure, figcaption, footer, header, hgroup,\nmenu, nav, output, ruby, section, summary,\ntime, mark, audio, video {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font: inherit;\n  vertical-align: baseline; }\n\n/* HTML5 display-role reset for older browsers */\narticle, aside, details, figcaption, figure,\nfooter, header, hgroup, menu, nav, section {\n  display: block; }\n\nbody {\n  line-height: 1; }\n\nol, ul {\n  list-style: none; }\n\nblockquote, q {\n  quotes: none; }\n\nblockquote:before, blockquote:after,\nq:before, q:after {\n  content: '';\n  content: none; }\n\ntable {\n  border-collapse: collapse;\n  border-spacing: 0; }\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	// css base code, injected by the css-loader
-	module.exports = function() {
-		var list = [];
-
-		// return the list of modules as css string
-		list.toString = function toString() {
-			var result = [];
-			for(var i = 0; i < this.length; i++) {
-				var item = this[i];
-				if(item[2]) {
-					result.push("@media " + item[2] + "{" + item[1] + "}");
-				} else {
-					result.push(item[1]);
-				}
-			}
-			return result.join("");
-		};
-
-		// import a list of modules into the list
-		list.i = function(modules, mediaQuery) {
-			if(typeof modules === "string")
-				modules = [[null, modules, ""]];
-			var alreadyImportedModules = {};
-			for(var i = 0; i < this.length; i++) {
-				var id = this[i][0];
-				if(typeof id === "number")
-					alreadyImportedModules[id] = true;
-			}
-			for(i = 0; i < modules.length; i++) {
-				var item = modules[i];
-				// skip already imported module
-				// this implementation is not 100% perfect for weird media query combinations
-				//  when a module is imported multiple times with different media queries.
-				//  I hope this will never occur (Hey this way we have smaller bundles)
-				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-					if(mediaQuery && !item[2]) {
-						item[2] = mediaQuery;
-					} else if(mediaQuery) {
-						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-					}
-					list.push(item);
-				}
-			}
-		};
-		return list;
-	};
-
-
-/***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	var stylesInDom = {},
-		memoize = function(fn) {
-			var memo;
-			return function () {
-				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-				return memo;
-			};
-		},
-		isOldIE = memoize(function() {
-			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
-		}),
-		getHeadElement = memoize(function () {
-			return document.head || document.getElementsByTagName("head")[0];
-		}),
-		singletonElement = null,
-		singletonCounter = 0,
-		styleElementsInsertedAtTop = [];
-
-	module.exports = function(list, options) {
-		if(false) {
-			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-		}
-
-		options = options || {};
-		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-		// tags it will allow on a page
-		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
-
-		// By default, add <style> tags to the bottom of <head>.
-		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
-
-		var styles = listToStyles(list);
-		addStylesToDom(styles, options);
-
-		return function update(newList) {
-			var mayRemove = [];
-			for(var i = 0; i < styles.length; i++) {
-				var item = styles[i];
-				var domStyle = stylesInDom[item.id];
-				domStyle.refs--;
-				mayRemove.push(domStyle);
-			}
-			if(newList) {
-				var newStyles = listToStyles(newList);
-				addStylesToDom(newStyles, options);
-			}
-			for(var i = 0; i < mayRemove.length; i++) {
-				var domStyle = mayRemove[i];
-				if(domStyle.refs === 0) {
-					for(var j = 0; j < domStyle.parts.length; j++)
-						domStyle.parts[j]();
-					delete stylesInDom[domStyle.id];
-				}
-			}
-		};
-	}
-
-	function addStylesToDom(styles, options) {
-		for(var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-			if(domStyle) {
-				domStyle.refs++;
-				for(var j = 0; j < domStyle.parts.length; j++) {
-					domStyle.parts[j](item.parts[j]);
-				}
-				for(; j < item.parts.length; j++) {
-					domStyle.parts.push(addStyle(item.parts[j], options));
-				}
-			} else {
-				var parts = [];
-				for(var j = 0; j < item.parts.length; j++) {
-					parts.push(addStyle(item.parts[j], options));
-				}
-				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-			}
-		}
-	}
-
-	function listToStyles(list) {
-		var styles = [];
-		var newStyles = {};
-		for(var i = 0; i < list.length; i++) {
-			var item = list[i];
-			var id = item[0];
-			var css = item[1];
-			var media = item[2];
-			var sourceMap = item[3];
-			var part = {css: css, media: media, sourceMap: sourceMap};
-			if(!newStyles[id])
-				styles.push(newStyles[id] = {id: id, parts: [part]});
-			else
-				newStyles[id].parts.push(part);
-		}
-		return styles;
-	}
-
-	function insertStyleElement(options, styleElement) {
-		var head = getHeadElement();
-		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
-		if (options.insertAt === "top") {
-			if(!lastStyleElementInsertedAtTop) {
-				head.insertBefore(styleElement, head.firstChild);
-			} else if(lastStyleElementInsertedAtTop.nextSibling) {
-				head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
-			} else {
-				head.appendChild(styleElement);
-			}
-			styleElementsInsertedAtTop.push(styleElement);
-		} else if (options.insertAt === "bottom") {
-			head.appendChild(styleElement);
-		} else {
-			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-		}
-	}
-
-	function removeStyleElement(styleElement) {
-		styleElement.parentNode.removeChild(styleElement);
-		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
-		if(idx >= 0) {
-			styleElementsInsertedAtTop.splice(idx, 1);
-		}
-	}
-
-	function createStyleElement(options) {
-		var styleElement = document.createElement("style");
-		styleElement.type = "text/css";
-		insertStyleElement(options, styleElement);
-		return styleElement;
-	}
-
-	function createLinkElement(options) {
-		var linkElement = document.createElement("link");
-		linkElement.rel = "stylesheet";
-		insertStyleElement(options, linkElement);
-		return linkElement;
-	}
-
-	function addStyle(obj, options) {
-		var styleElement, update, remove;
-
-		if (options.singleton) {
-			var styleIndex = singletonCounter++;
-			styleElement = singletonElement || (singletonElement = createStyleElement(options));
-			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
-			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
-		} else if(obj.sourceMap &&
-			typeof URL === "function" &&
-			typeof URL.createObjectURL === "function" &&
-			typeof URL.revokeObjectURL === "function" &&
-			typeof Blob === "function" &&
-			typeof btoa === "function") {
-			styleElement = createLinkElement(options);
-			update = updateLink.bind(null, styleElement);
-			remove = function() {
-				removeStyleElement(styleElement);
-				if(styleElement.href)
-					URL.revokeObjectURL(styleElement.href);
-			};
-		} else {
-			styleElement = createStyleElement(options);
-			update = applyToTag.bind(null, styleElement);
-			remove = function() {
-				removeStyleElement(styleElement);
-			};
-		}
-
-		update(obj);
-
-		return function updateStyle(newObj) {
-			if(newObj) {
-				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
-					return;
-				update(obj = newObj);
-			} else {
-				remove();
-			}
-		};
-	}
-
-	var replaceText = (function () {
-		var textStore = [];
-
-		return function (index, replacement) {
-			textStore[index] = replacement;
-			return textStore.filter(Boolean).join('\n');
-		};
-	})();
-
-	function applyToSingletonTag(styleElement, index, remove, obj) {
-		var css = remove ? "" : obj.css;
-
-		if (styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = replaceText(index, css);
-		} else {
-			var cssNode = document.createTextNode(css);
-			var childNodes = styleElement.childNodes;
-			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
-			if (childNodes.length) {
-				styleElement.insertBefore(cssNode, childNodes[index]);
-			} else {
-				styleElement.appendChild(cssNode);
-			}
-		}
-	}
-
-	function applyToTag(styleElement, obj) {
-		var css = obj.css;
-		var media = obj.media;
-
-		if(media) {
-			styleElement.setAttribute("media", media)
-		}
-
-		if(styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = css;
-		} else {
-			while(styleElement.firstChild) {
-				styleElement.removeChild(styleElement.firstChild);
-			}
-			styleElement.appendChild(document.createTextNode(css));
-		}
-	}
-
-	function updateLink(linkElement, obj) {
-		var css = obj.css;
-		var sourceMap = obj.sourceMap;
-
-		if(sourceMap) {
-			// http://stackoverflow.com/a/26603875
-			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-		}
-
-		var blob = new Blob([css], { type: "text/css" });
-
-		var oldSrc = linkElement.href;
-
-		linkElement.href = URL.createObjectURL(blob);
-
-		if(oldSrc)
-			URL.revokeObjectURL(oldSrc);
-	}
-
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(6);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(4)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js!./../node_modules/sass-loader/index.js!./styles.scss", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js!./../node_modules/sass-loader/index.js!./styles.scss");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(3)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ".top-panel {\n  align-items: center;\n  background-color: #4f0d13;\n  display: flex;\n  flex-direction: column; }\n\nheader {\n  font-family: 'Roboto Slab', serif;\n  font-size: 50px;\n  width: 190px;\n  height: 50px;\n  margin: 20px 0;\n  color: #FFFFFF; }\n\n.box-logo {\n  color: #BFBFBF; }\n\ninput, textarea {\n  text-indent: 10px;\n  color: #6D6E71;\n  border: 2px solid #6D6E71; }\n\ninput, textarea, button {\n  font-family: 'Open Sans', sans-serif;\n  font-size: 18px; }\n\n.destroy, .upvote, .downvote {\n  text-indent: -99999px; }\n\nlabel {\n  text-indent: -99999px; }\n\ntextarea {\n  resize: none; }\n\ntextarea::-webkit-input-placeholder {\n  padding-top: -10px; }\n\n.task-title-class, .task-body-class, .search-class {\n  height: 40px;\n  width: 500px;\n  margin: 5px 0;\n  outline: none; }\n\n.task-body-class {\n  padding-top: 10px;\n  height: 30px;\n  width: 497px; }\n\n.title-counter, .body-counter {\n  /*border: 2px solid pink;*/\n  color: #BFBFBF;\n  font-family: \"Roboto Slab\", serif;\n  font-weight: bolder;\n  height: 25px;\n  width: 160px;\n  text-align: center; }\n\n.save-btn-class, #load-more {\n  height: 43px;\n  width: 505px;\n  margin: 10px 0 40px 0;\n  background-color: #EDBE91;\n  color: #000000;\n  border: none;\n  outline: none; }\n\n.save-btn-class:hover, #load-more:hover {\n  background-color: #E2974F;\n  cursor: pointer; }\n\n.bottom-panel {\n  display: flex;\n  align-items: center;\n  flex-direction: column; }\n\n.search-class {\n  margin: 20px 0 30px 0;\n  outline: none; }\n\nh2 {\n  color: #6D6E71;\n  font-family: \"Roboto Slab\", serif;\n  font-weight: bolder;\n  display: inline-block;\n  margin-right: 8px; }\n\n#filters {\n  /*border: 2px solid pink;*/\n  margin-top: 10px;\n  width: 70%;\n  height: 30px;\n  text-align: center; }\n\n.filter-btn {\n  border-radius: 4px;\n  border: none;\n  background-color: #D3D3D3;\n  color: #000000;\n  font-family: 'Open Sans', sans-serif;\n  font-size: 14px;\n  display: inline-block;\n  margin: 4px 7px 0 0;\n  outline: none; }\n\n.filter-btn:hover {\n  background-color: #EDBE91; }\n\n.bottom-header {\n  height: 30px;\n  width: auto; }\n\nh3 {\n  color: #6D6E71;\n  font-size: 25px;\n  line-height: 1.3;\n  max-width: 300px;\n  max-height: 30px;\n  outline: none;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  width: 500px;\n  white-space: nowrap; }\n\n.changing-innertext {\n  white-space: pre-wrap; }\n\nh4 {\n  color: #6D6E71;\n  display: inline-block;\n  margin: 10px;\n  position: absolute;\n  bottom: -1px; }\n\nfooter {\n  margin-bottom: 30px;\n  position: relative; }\n\n.importance-change {\n  color: #6D6E71;\n  font-family: 'Open Sans', sans-serif; }\n\n.task-card {\n  border-bottom: solid thin #D1D3D4;\n  font-family: 'Roboto Slab', serif;\n  margin-bottom: 25px;\n  width: 500px; }\n\n.card-body {\n  color: #6D6E71;\n  font-family: 'Open Sans', sans-serif;\n  font-size: 18px;\n  letter-spacing: .5px;\n  line-height: 1.3;\n  margin: 20px 0;\n  outline: none;\n  width: 500px; }\n\n.destroy, .upvote, .downvote {\n  border: none;\n  color: none;\n  height: 30px;\n  width: 30px;\n  outline: none; }\n\n.destroy:hover, .upvote:hover, .downvote:hover, .complete, .filter-btn {\n  cursor: pointer; }\n\n.destroy {\n  background: url(" + __webpack_require__(7) + ");\n  float: right;\n  position: static; }\n\n.destroy:hover {\n  background: url(" + __webpack_require__(8) + "); }\n\n.complete {\n  border-radius: 4px;\n  border: none;\n  background-color: #D3D3D3;\n  color: #000000;\n  font-family: 'Open Sans', sans-serif;\n  font-size: 14px;\n  float: right;\n  margin: 4px 7px 0 0;\n  outline: none; }\n\n.complete:hover {\n  background-color: #EDBE91; }\n\n.hide {\n  display: none; }\n\n.upvote {\n  background: url(" + __webpack_require__(9) + ");\n  margin-right: 10px; }\n\n.upvote:hover {\n  background: url(" + __webpack_require__(10) + "); }\n\n.downvote {\n  background: url(" + __webpack_require__(11) + ");\n  margin: 0 20px 0 10px; }\n\n.downvote:hover {\n  background: url(" + __webpack_require__(12) + "); }\n\n.strikethrough {\n  text-decoration: line-through; }\n\n@media screen and (max-width: 550px) {\n  .top-panel, .bottom-panel, .card-body {\n    width: 100%; }\n  h3, .idea-output, .save-btn-class, .search-class, #load-more {\n    width: 300px; }\n  h3 {\n    max-width: 150px; }\n  .search-class {\n    margin: 40px 0 30px 0; }\n  .task-title-class, .task-body-class, .task-card {\n    width: 300px; }\n  .task-body-class {\n    height: 100px; } }\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 7 */
-/***/ function(module, exports) {
-
-	module.exports = "\"data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 20 20' style='enable-background:new 0 0 20 20;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%23D1D3D4;%7D .st1%7Bfill:%23FFFFFF;%7D %3C/style%3E %3Cg%3E %3Cg%3E %3Cellipse transform='matrix(0.7071 -0.7071 0.7071 0.7071 -4.1604 9.9558)' class='st0' cx='9.9' cy='10' rx='8.7' ry='8.7'/%3E %3Cg%3E %3Crect x='5.7' y='9.5' transform='matrix(0.7071 -0.7071 0.7071 0.7071 -4.1604 9.9559)' class='st1' width='8.5' height='1'/%3E %3Crect x='9.4' y='5.7' transform='matrix(0.7071 -0.7071 0.7071 0.7071 -4.1604 9.9559)' class='st1' width='1' height='8.5'/%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/svg%3E\""
-
-/***/ },
-/* 8 */
-/***/ function(module, exports) {
-
-	module.exports = "\"data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 20 20' style='enable-background:new 0 0 20 20;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%23EF4136;%7D .st1%7Bfill:%23FFFFFF;%7D %3C/style%3E %3Cg%3E %3Cg%3E %3Cellipse transform='matrix(0.7071 -0.7071 0.7071 0.7071 -4.1604 9.9558)' class='st0' cx='9.9' cy='10' rx='8.7' ry='8.7'/%3E %3Cg%3E %3Crect x='5.7' y='9.5' transform='matrix(0.7071 -0.7071 0.7071 0.7071 -4.1604 9.956)' class='st1' width='8.5' height='1'/%3E %3Crect x='9.4' y='5.7' transform='matrix(0.7071 -0.7071 0.7071 0.7071 -4.1604 9.956)' class='st1' width='1' height='8.5'/%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/svg%3E\""
-
-/***/ },
-/* 9 */
-/***/ function(module, exports) {
-
-	module.exports = "\"data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 20 20' style='enable-background:new 0 0 20 20;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%23D1D3D4;%7D .st1%7Bfill:%23FFFFFF;%7D %3C/style%3E %3Cg%3E %3Cg%3E %3Cellipse transform='matrix(0.7071 -0.7071 0.7071 0.7071 -4.1604 9.9558)' class='st0' cx='9.9' cy='10' rx='8.7' ry='8.7'/%3E %3Cg%3E %3Crect x='9.4' y='6.6' class='st1' width='1' height='7.8'/%3E %3Cg%3E %3Cpolygon class='st1' points='5.8,10 6.6,10.6 9.9,7 13.3,10.6 14,10 9.9,5.6 '/%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/svg%3E\""
-
-/***/ },
-/* 10 */
-/***/ function(module, exports) {
-
-	module.exports = "\"data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 20 20' style='enable-background:new 0 0 20 20;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%2339B54A;%7D .st1%7Bfill:%23FFFFFF;%7D %3C/style%3E %3Cg%3E %3Cg%3E %3Cellipse transform='matrix(0.7071 -0.7071 0.7071 0.7071 -4.1604 9.9558)' class='st0' cx='9.9' cy='10' rx='8.7' ry='8.7'/%3E %3Cg%3E %3Crect x='9.4' y='6.6' class='st1' width='1' height='7.8'/%3E %3Cg%3E %3Cpolygon class='st1' points='5.8,10 6.6,10.6 9.9,7 13.3,10.6 14,10 9.9,5.6 '/%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/svg%3E\""
-
-/***/ },
-/* 11 */
-/***/ function(module, exports) {
-
-	module.exports = "\"data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 20 20' style='enable-background:new 0 0 20 20;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%23D1D3D4;%7D .st1%7Bfill:%23FFFFFF;%7D %3C/style%3E %3Cg%3E %3Cg%3E %3Cellipse transform='matrix(0.7071 -0.7071 0.7071 0.7071 -4.1604 9.9558)' class='st0' cx='9.9' cy='10' rx='8.7' ry='8.7'/%3E %3Cg%3E %3Crect x='9.4' y='5.6' class='st1' width='1' height='7.8'/%3E %3Cg%3E %3Cpolygon class='st1' points='14,10 13.3,9.4 9.9,13 6.6,9.4 5.8,10 9.9,14.4 '/%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/svg%3E\""
-
-/***/ },
-/* 12 */
-/***/ function(module, exports) {
-
-	module.exports = "\"data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 20 20' style='enable-background:new 0 0 20 20;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%23FBB040;%7D .st1%7Bfill:%23FFFFFF;%7D %3C/style%3E %3Cg%3E %3Cg%3E %3Cellipse transform='matrix(0.7071 -0.7071 0.7071 0.7071 -4.1604 9.9558)' class='st0' cx='9.9' cy='10' rx='8.7' ry='8.7'/%3E %3Cg%3E %3Crect x='9.4' y='5.6' class='st1' width='1' height='7.8'/%3E %3Cg%3E %3Cpolygon class='st1' points='14,10 13.3,9.4 9.9,13 6.6,9.4 5.8,10 9.9,14.4 '/%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/g%3E %3C/svg%3E\""
-
-/***/ },
-/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -10879,11 +10465,11 @@
 
 
 /***/ },
-/* 14 */
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*jshint esversion: 6 */
-	$ = __webpack_require__(13);
+	$ = __webpack_require__(1);
 
 	const taskSection = $('#task-section');
 
@@ -10903,15 +10489,15 @@
 	  return (`
 	    <li class="task-card ${this.completed}" id=${this.id}>
 	      <header class="bottom-header">
-	        <button class="destroy">Delete</button>
-	        <button class="complete">Complete</button>
 	        <h3 contenteditable="true" class="${completed} ${this.completed}">${this.title}</h3>
+	        <button class="destroy">Delete</button>
+	        <button class="complete" name="complete">Complete</button>
 	      </header>
 	      <p contenteditable="true" class="card-body ${completed} ${this.completed}">${this.body}</p>
 	      <footer>
 	        <button class="upvote">upvote</button><button class="downvote">downvote</button>
-	        <h4>
-	          importance:<span class="importance-change"> ${this.importance}</span>
+	        <h4 tabindex="0">
+	          importance:<span name="importance" class="importance-change" tabindex="0"> ${this.importance}</span>
 	        </h4>
 	      </footer>
 	    </li>
@@ -10922,14 +10508,14 @@
 	    return (`
 	      <li class="task-card ${this.completed}" id=${this.id}>
 	        <header class="bottom-header">
-	          <button class="destroy">Delete</button>
 	          <h3 contenteditable="true" class="strikethrough ${this.completed}">${this.title}</h3>
+	          <button class="destroy">Delete</button>
 	        </header>
 	        <p contenteditable="true" class="card-body strikethrough ${this.completed}">${this.body}</p>
 	        <footer>
 	          <button class="upvote">upvote</button><button class="downvote">downvote</button>
-	          <h4>
-	            importance:<span class="importance-change"> ${this.importance}</span>
+	          <h4 tabindex="0">
+	            importance:<span name="importance" class="importance-change" tabindex="0"> ${this.importance}</span>
 	          </h4>
 	        </footer>
 	      </li>
@@ -10939,6 +10525,7 @@
 	Task.prototype.remove = function(id) {
 	  taskManager.remove(this.id);
 	  taskManager.hideCompletedTask();
+	  showloadMoreBtn();
 	};
 
 	Task.prototype.upvote = function() {
@@ -10955,6 +10542,7 @@
 	  taskManager.store();
 	  taskManager.render();
 	  taskManager.hideCompletedTask();
+	  showloadMoreBtn();
 	};
 
 	Task.prototype.downvote = function() {
@@ -10971,6 +10559,7 @@
 	  taskManager.store();
 	  taskManager.render();
 	  taskManager.hideCompletedTask();
+	  showloadMoreBtn();
 	};
 
 	Task.prototype.toggleState = function() {
@@ -11015,18 +10604,26 @@
 
 	  render: function () {
 	    taskSection.html('');
-	    for (let i = 0; i < this.taskArray.length; i++) {
-	      let task = this.taskArray[i];
+	    let sliced = this.taskArray.slice();
+	    if(sliced.length > 10) {
+	      sliced = sliced.splice(sliced.length-10 , sliced.length-1);
+	      for (let i = 0; i < sliced.length; i++) {
+	      task = sliced[i];
 	      taskSection.prepend(task.toHTML());
+	      }
+	    } else {
+	      for (let i = 0; i < sliced.length; i++) {
+	      task = sliced[i];
+	      taskSection.prepend(task.toHTML());
+	      }
 	    }
 	  },
 
-	  renderOnlyTen: function () {
+	  renderAll: function () {
 	    taskSection.html('');
-	    this.taskArray = this.taskArray.concat().reverse().slice(0, 10);
 	    for (let i = 0; i < this.taskArray.length; i++) {
-	      task = this.taskArray[i];
-	      taskSection.prepend(task.toHTML());
+	    task = this.taskArray[i];
+	    taskSection.prepend(task.toHTML());
 	    }
 	  },
 
@@ -11080,6 +10677,10 @@
 	    }
 	  }
 	}; //end of taskManager
+
+	function showloadMoreBtn() {
+	  $('#load-more').show()
+	};
 
 	module.exports = Task;
 	module.exports = taskManager;
