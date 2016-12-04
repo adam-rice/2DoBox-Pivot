@@ -14,10 +14,9 @@ header {
   height: 50px;
   margin: 20px 0;
   color: $basic-color;
-}
-
-.box-logo {
-  color: $button-color;
+  .box-logo {
+    color: $button-color;
+  }
 }
 
 input, textarea {
@@ -77,11 +76,10 @@ textarea::-webkit-input-placeholder {
   color: $btn-text-color;
   border: none;
   outline: none;
-}
-
-.save-btn-class:hover, #load-more:hover {
-  background-color: $hover-color;
-  cursor: pointer;
+  &:hover {
+    background-color: $hover-color;
+    cursor: pointer;
+  }
 }
 
 .bottom-panel {
@@ -120,10 +118,10 @@ h2 {
   display: inline-block;
   margin: 4px 7px 0 0;
   outline: none;
-}
-
-.filter-btn:hover {
-  background-color: $secondary-color;
+  &:hover {
+    background-color: $secondary-color;
+    cursor: pointer;
+  }
 }
 
 .bottom-header {
@@ -192,20 +190,18 @@ footer {
   height: 30px;
   width: 30px;
   outline: none;
-}
-
-.destroy:hover, .upvote:hover, .downvote:hover, .complete, .filter-btn {
-  cursor: pointer;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .destroy {
   background: url(../Images/delete.svg);
   float: right;
   position: static;
-}
-
-.destroy:hover {
-  background: url(../Images/delete-hover.svg);
+  &:hover {
+    background: url(../Images/delete-hover.svg);
+  }
 }
 
 .complete {
@@ -218,10 +214,10 @@ footer {
   float: right;
   margin: 4px 7px 0 0;
   outline: none;
-}
-
-.complete:hover {
-  background-color: $secondary-color;
+  &:hover {
+    background-color: $secondary-color;
+    cursor: pointer;
+  }
 }
 
 .hide {
@@ -231,19 +227,17 @@ footer {
 .upvote {
   background: url(../Images/upvote.svg);
   margin-right: 10px;
-}
-
-.upvote:hover {
-  background: url(../Images/upvote-hover.svg);
+  &:hover {
+    background: url(../Images/upvote-hover.svg);
+  }
 }
 
 .downvote {
   background: url(../Images/downvote.svg);
   margin: 0 20px 0 10px;
-}
-
-.downvote:hover {
-  background: url(../Images/downvote-hover.svg);
+  &:hover {
+    background: url(../Images/downvote-hover.svg);
+  }
 }
 
 .strikethrough {
@@ -255,7 +249,7 @@ footer {
     width: 100%;
   }
 
-  h3, .idea-output, .save-btn-class, .search-class, #load-more {
+  h3, .idea-output, .save-btn-class, .search-class, #load-more, .task-title-class, .task-body-class, .task-card {
     width: 300px;
   }
 
@@ -265,10 +259,6 @@ footer {
 
   .search-class {
     margin: 40px 0 30px 0;
-  }
-
-  .task-title-class, .task-body-class, .task-card {
-    width: 300px;
   }
 
   .task-body-class {
