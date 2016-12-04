@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 const assert = require('chai').assert;
 const webdriver = require('selenium-webdriver');
 const test = require('selenium-webdriver/testing');
@@ -27,7 +28,7 @@ test.describe('testing idea box', ()=> {
       return description.getAttribute('value');
     }).then( (value)=> {
       assert.equal(value, 'this is our sweet new description');
-    })
+    });
   });
 
   test.it('should allow Adam and Devin to to save a new task', ()=> {
@@ -40,11 +41,11 @@ test.describe('testing idea box', ()=> {
     saveButton.click();
 
     const newTask = driver.findElement({tagName: 'li'}).then( (li)=> {
-      return li.getText()
+      return li.getText();
     }).then( (text)=> {
       assert.include(text, 'this is our sweet new title');
       assert.include(text, 'this is our sweet new description');
-    })
+    });
   });
 
   test.it('should be a sweet new task with a default importance of normal', ()=> {
@@ -60,7 +61,7 @@ test.describe('testing idea box', ()=> {
       return importance.getText();
       }).then( (text)=> {
         assert.equal(text, 'normal');
-      })
+      });
   });
 
 });
