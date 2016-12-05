@@ -3,8 +3,7 @@ const assert = require('chai').assert;
 const webdriver = require('selenium-webdriver');
 const test = require('selenium-webdriver/testing');
 
-test.describe('testing idea box', ()=> {
-  this.setTimeout(10000);
+test.describe('testing 2DoBox', ()=> {
   let driver;
   beforeEach ( ()=> {
     driver = new webdriver.Builder().forBrowser('chrome').build();
