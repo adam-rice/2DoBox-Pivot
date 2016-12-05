@@ -1,9 +1,5 @@
 /*jshint esversion: 6 */
-$ = require('jquery');
-
-const taskSection = $('#task-section');
-
-function Task(title, body, importance, id, completed) {
+function Task(title, body, importance, completed, id) {
   this.title = title;
   this.body = body;
   this.importance = importance || "normal";
@@ -69,8 +65,10 @@ Task.prototype.upvote = function() {
   } else if (importance === 'high') {
     this.importance = 'critical';
   }
-  updateTaskSection();
-  showloadMoreBtn();
+  // taskManager.store();
+  // taskManager.render();
+  // taskManager.hideCompletedTask();
+  // showloadMoreBtn();
 };
 
 Task.prototype.downvote = function() {
@@ -84,8 +82,10 @@ Task.prototype.downvote = function() {
   } else if (importance === 'low') {
     this.importance = 'none';
   }
-  updateTaskSection();
-  showloadMoreBtn();
+  // taskManager.store();
+  // taskManager.render();
+  // taskManager.hideCompletedTask();
+  // showloadMoreBtn();
 };
 
 Task.prototype.toggleState = function() {
@@ -94,121 +94,21 @@ Task.prototype.toggleState = function() {
   } else if (this.completed === true) {
     this.completed = false;
   }
-  taskManager.store();
+  // taskManager.store();
 };
 
 Task.prototype.saveNewTitle = function (target) {
   this.title = target;
-  updateTaskSection();
+  // taskManager.store();
+  // taskManager.render();
+  // taskManager.hideCompletedTask();
 };
 
 Task.prototype.saveNewBody = function (target) {
   this.body = target;
-  updateTaskSection();
+  // taskManager.store();
+  // taskManager.render();
+  // taskManager.hideCompletedTask();
 };
 
-const taskManager = {
-  taskArray: [],
-  add: function(title, body) {
-    this.taskArray.push(new Task(title, body));
-    this.store();
-    this.render();
-    this.hideCompletedTask();
-  },
-
-  find: function(id) {
-    id = parseInt(id);
-    return this.taskArray.find( function(task) {
-      return task.id === id;
-    });
-  },
-
-  render: function () {
-    taskSection.html('');
-    let sliced = this.taskArray.slice();
-    if(sliced.length > 10) {
-      sliced = sliced.splice(sliced.length-10 , sliced.length-1);
-      for (let i = 0; i < sliced.length; i++) {
-        let uncompletedTask = sliced[i];
-        taskSection.prepend(uncompletedTask.toHTML());
-      }
-      } else {
-      for (let i = 0; i < sliced.length; i++) {
-        let uncompletedTask = sliced[i];
-        taskSection.prepend(uncompletedTask.toHTML());
-      }
-    }
-  },
-
-  renderAll: function () {
-    taskSection.html('');
-    for (let i = 0; i < this.taskArray.length; i++) {
-    task = this.taskArray[i];
-    taskSection.prepend(task.toHTML());
-    }
-  },
-
-  store: function() {
-    localStorage.setItem('tasks', JSON.stringify(this.taskArray));
-  },
-
-  retrieve: function() {
-    let retrievedTasks = JSON.parse(localStorage.getItem('tasks'));
-    if (retrievedTasks) {
-      for (i = 0; i < retrievedTasks.length; i++) {
-        let task = retrievedTasks[i];
-        this.taskArray.push(new Task(task.title, task.body, task.importance, task.id, task.completed));
-      }
-    }
-  },
-
-  remove: function(id) {
-    this.taskArray = this.taskArray.filter(function(task) {
-      return task.id !== id;
-    });
-    this.store();
-    this.render();
-  },
-
-  hideCompletedTask: function() {
-    for (let i = 0; i < this.taskArray.length; i++) {
-      let task = this.taskArray[i];
-      if (task.completed === true) {
-        $('.true').hide();
-      }
-    }
-  },
-
-  showCompletedTasks: function() {
-    for (let i = 0; i < this.taskArray.length; i++) {
-      let task = this.taskArray[i];
-      if (task.completed === true) {
-        taskSection.prepend(task.completedToHTML());
-      }
-    }
-  },
-
-  showTasksFilterSelection: function(id) {
-    taskSection.html('');
-    for (let i = 0; i < this.taskArray.length; i++) {
-      let task = this.taskArray[i];
-      if (task.importance === id) {
-        taskSection.prepend(task.toHTML());
-      }
-    }
-  }
-}; //end of taskManager
-
-function showloadMoreBtn() {
-  $('#load-more').show();
-  $('#load-more').html('Load More...');
-}
-
-function updateTaskSection() {
-  taskManager.store();
-  taskManager.render();
-  taskManager.hideCompletedTask();
-}
-
 module.exports = Task;
-module.exports = taskManager;
