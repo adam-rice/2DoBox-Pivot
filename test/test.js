@@ -4,6 +4,7 @@ const webdriver = require('selenium-webdriver');
 const test = require('selenium-webdriver/testing');
 
 test.describe('testing idea box', ()=> {
+  this.setTimeout(10000);
   let driver;
   beforeEach ( ()=> {
     driver = new webdriver.Builder().forBrowser('chrome').build();
