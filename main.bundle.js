@@ -72,7 +72,8 @@
 	  makeNewTask();
 	  taskManager.render();
 	  titleInput.focus();
-	  showloadMoreBtn();
+	  showLoadMoreBtn();
+	  taskManager.hideCompletedTask();
 	});
 
 	bodyInput.on('keyup', function(key) {
@@ -83,7 +84,7 @@
 	      return false;
 	    } else {
 	      makeNewTask();
-	      showloadMoreBtn();
+	      showLoadMoreBtn();
 	    }
 	  }
 	});
@@ -92,29 +93,33 @@
 	  let id = $(this).attr('id');
 	  taskManager.showTasksFilterSelection(id);
 	  taskManager.hideCompletedTask();
+	  hideLoadMoreBtn();
 	});
 
 	filterSection.on('click', '#complete-filter-btn', function() {
 	  taskManager.hideCompletedTask();
 	  taskManager.showCompletedTasks();
+	  hideLoadMoreBtn();
 	});
 
 	filterSection.on('click', '#reset-filter-btn', function() {
 	  taskSection.html('');
 	  taskManager.render();
 	  taskManager.hideCompletedTask();
+	  $('#load-more').show();
 	});
 
 
 	$('#load-more').on('click', function() {
+	  const $loadMoreBtn = $('#load-more');
 	  if (taskManager.taskArray.length === 0) {
-	    $('#load-more').html('You don\'t have any 2Dos yet');
+	    $loadMoreBtn.html('You don\'t have any 2Dos yet');
 	  } else if (taskManager.taskArray.length <= 10) {
-	    $('#load-more').html('You don\'t have any 2Dos hidden');
+	    $loadMoreBtn.html('You don\'t have any 2Dos hidden');
 	  } else {
 	    taskManager.renderAll();
 	    taskManager.hideCompletedTask();
-	    $('#load-more').hide();
+	    hideLoadMoreBtn();
 	  }
 	});
 
@@ -144,26 +149,14 @@
 	  }
 	});
 
-	taskSection.on('blur', 'h3', function() {
-	  let id = $(this).closest('.task-card').attr('id');
-	  $(this).removeClass('changing-innertext');
-	  replaceNodeText($(this), id);
-	});
-
-	taskSection.on('blur', 'p', function() {
-	  let id = $(this).closest('.task-card').attr('id');
-	   $(this).removeClass('changing-innertext');
-	   replaceNodeText($(this), id);
-	});
-
 	search.on("keyup", function() {
 	  let search = $(this).val();
 	  $('h3:contains(' + search + ')').closest('.task-card').show();
 	  $('h3:not(:contains(' + search + '))').closest('.task-card').hide();
 	  $('p:contains(' + search + ')').closest('.task-card').show();
+	  taskManager.hideCompletedTask();
 	});
 
-	////Functions////
 	function enableSave() {
 	  let title = titleInput.val();
 	  let body = bodyInput.val();
@@ -231,9 +224,13 @@
 	  clearCharCounts();
 	}
 
-	function showloadMoreBtn() {
+	function showLoadMoreBtn() {
 	  $('#load-more').show();
 	  $('#load-more').html('Load More...');
+	}
+
+	function hideLoadMoreBtn() {
+	  $('#load-more').hide();
 	}
 
 	taskManager.retrieve();
@@ -624,7 +621,7 @@
 
 
 	// module
-	exports.push([module.id, ".top-panel {\n  align-items: center;\n  background-color: #4F0D13;\n  display: flex;\n  flex-direction: column; }\n\nheader {\n  font-family: 'Roboto Slab', serif;\n  font-size: 50px;\n  width: 190px;\n  height: 50px;\n  margin: 20px 0;\n  color: #FFFFFF; }\n  header .box-logo {\n    color: #D1D3D4; }\n\ninput, textarea {\n  text-indent: 10px;\n  color: #6D6E71;\n  border: 2px solid #6D6E71; }\n\ninput, textarea, button {\n  font-family: 'Open Sans', sans-serif;\n  font-size: 18px; }\n\n.destroy, .upvote, .downvote {\n  text-indent: -99999px; }\n\nlabel {\n  text-indent: -99999px; }\n\ntextarea {\n  resize: none; }\n\ntextarea::-webkit-input-placeholder {\n  padding-top: -10px; }\n\n.task-title-class, .task-body-class, .search-class {\n  height: 40px;\n  width: 500px;\n  margin: 5px 0;\n  outline: none; }\n\n.task-body-class {\n  padding-top: 10px;\n  height: 30px;\n  width: 497px; }\n\n.title-counter, .body-counter {\n  color: #D1D3D4;\n  font-family: \"Roboto Slab\", serif;\n  font-weight: bolder;\n  height: 25px;\n  width: 160px;\n  text-align: center; }\n\n.save-btn-class, #load-more {\n  height: 43px;\n  width: 505px;\n  margin: 10px 0 40px 0;\n  background-color: #EDBE91;\n  color: #000000;\n  border: none;\n  outline: none; }\n  .save-btn-class:hover, #load-more:hover {\n    background-color: #E2974F;\n    cursor: pointer; }\n\n.bottom-panel {\n  display: flex;\n  align-items: center;\n  flex-direction: column; }\n\n.search-class {\n  margin: 20px 0 30px 0;\n  outline: none; }\n\nh2 {\n  color: #6D6E71;\n  font-family: \"Roboto Slab\", serif;\n  font-weight: bolder;\n  display: inline-block;\n  margin-right: 8px; }\n\n#filters {\n  margin-top: 10px;\n  width: 70%;\n  height: 30px;\n  text-align: center; }\n\n.filter-btn {\n  border-radius: 4px;\n  border: none;\n  background-color: #D1D3D4;\n  color: #000000;\n  font-family: 'Open Sans', sans-serif;\n  font-size: 14px;\n  display: inline-block;\n  margin: 4px 7px 0 0;\n  outline: none; }\n  .filter-btn:hover {\n    background-color: #EDBE91;\n    cursor: pointer; }\n\n.bottom-header {\n  font-size: 0px;\n  height: 30px;\n  width: auto; }\n\nh3 {\n  color: #6D6E71;\n  display: inline-block;\n  font-size: 25px;\n  line-height: 1.3;\n  max-width: 300px;\n  max-height: 30px;\n  outline: none;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  width: 500px;\n  white-space: nowrap; }\n\n.changing-innertext {\n  white-space: pre-wrap; }\n\nh4 {\n  color: #6D6E71;\n  display: inline-block;\n  margin: 10px;\n  position: absolute;\n  bottom: -1px; }\n\nfooter {\n  margin-bottom: 30px;\n  position: relative; }\n\n.importance-change {\n  color: #6D6E71;\n  font-family: 'Open Sans', sans-serif; }\n\n.task-card {\n  border-bottom: solid thin #D1D3D4;\n  font-family: 'Roboto Slab', serif;\n  margin-bottom: 25px;\n  width: 500px; }\n\n.card-body {\n  color: #6D6E71;\n  font-family: 'Open Sans', sans-serif;\n  font-size: 18px;\n  letter-spacing: .5px;\n  line-height: 1.3;\n  margin: 20px 0;\n  outline: none;\n  width: 500px; }\n\n.destroy, .upvote, .downvote {\n  border: none;\n  color: none;\n  height: 30px;\n  width: 30px;\n  outline: none; }\n  .destroy:hover, .upvote:hover, .downvote:hover {\n    cursor: pointer; }\n\n.destroy {\n  background: url(" + __webpack_require__(7) + ");\n  float: right;\n  position: static; }\n  .destroy:hover {\n    background: url(" + __webpack_require__(8) + "); }\n\n.complete {\n  border-radius: 4px;\n  border: none;\n  background-color: #D1D3D4;\n  color: #000000;\n  font-family: 'Open Sans', sans-serif;\n  font-size: 14px;\n  float: right;\n  margin: 4px 7px 0 0;\n  outline: none; }\n  .complete:hover {\n    background-color: #EDBE91;\n    cursor: pointer; }\n\n.hide {\n  display: none; }\n\n.upvote {\n  background: url(" + __webpack_require__(9) + ");\n  margin-right: 10px; }\n  .upvote:hover {\n    background: url(" + __webpack_require__(10) + "); }\n\n.downvote {\n  background: url(" + __webpack_require__(11) + ");\n  margin: 0 20px 0 10px; }\n  .downvote:hover {\n    background: url(" + __webpack_require__(12) + "); }\n\n.strikethrough {\n  text-decoration: line-through; }\n\n@media screen and (max-width: 550px) {\n  .top-panel, .bottom-panel, .card-body {\n    width: 100%; }\n  h3, .idea-output, .save-btn-class, .search-class, #load-more, .task-title-class, .task-body-class, .task-card {\n    width: 300px; }\n  h3 {\n    max-width: 150px; }\n  .search-class {\n    margin: 40px 0 30px 0; }\n  .task-body-class {\n    height: 100px; } }\n", ""]);
+	exports.push([module.id, ".top-panel {\n  align-items: center;\n  background-color: #4F0D13;\n  display: flex;\n  flex-direction: column; }\n\nheader {\n  font-family: 'Roboto Slab', serif;\n  font-size: 50px;\n  width: 190px;\n  height: 50px;\n  margin: 20px 0;\n  color: #FFFFFF; }\n  header .box-logo {\n    color: #D1D3D4; }\n\ninput, textarea {\n  text-indent: 10px;\n  color: #6D6E71;\n  border: 2px solid #6D6E71; }\n\ninput, textarea, button {\n  font-family: 'Open Sans', sans-serif;\n  font-size: 18px; }\n\n.destroy, .upvote, .downvote {\n  text-indent: -99999px; }\n\nlabel {\n  text-indent: -99999px; }\n\ntextarea {\n  resize: none; }\n\ntextarea::-webkit-input-placeholder {\n  padding-top: -10px; }\n\n.task-title-class, .task-body-class, .search-class {\n  height: 40px;\n  width: 500px;\n  margin: 5px 0;\n  outline: none; }\n\n.task-body-class {\n  padding-top: 10px;\n  height: 30px;\n  width: 497px; }\n\n.title-counter, .body-counter {\n  color: #D1D3D4;\n  font-family: \"Roboto Slab\", serif;\n  font-weight: bolder;\n  height: 25px;\n  width: 160px;\n  text-align: center; }\n\n.save-btn-class, #load-more {\n  height: 43px;\n  width: 505px;\n  margin: 10px 0 40px 0;\n  background-color: #EDBE91;\n  color: #000000;\n  border: none;\n  outline: none; }\n  .save-btn-class:hover, #load-more:hover {\n    background-color: #E2974F;\n    cursor: pointer; }\n\n.bottom-panel {\n  display: flex;\n  align-items: center;\n  flex-direction: column; }\n\n.search-class {\n  margin: 20px 0 30px 0;\n  outline: none; }\n\nh2 {\n  color: #6D6E71;\n  font-family: \"Roboto Slab\", serif;\n  font-weight: bolder;\n  display: inline-block;\n  margin-right: 8px; }\n\n#filters {\n  margin-top: 10px;\n  width: 70%;\n  height: 30px;\n  text-align: center; }\n\n.filter-btn {\n  border-radius: 4px;\n  border: none;\n  background-color: #D1D3D4;\n  color: #000000;\n  font-family: 'Open Sans', sans-serif;\n  font-size: 14px;\n  display: inline-block;\n  margin: 4px 7px 0 0;\n  outline: none; }\n  .filter-btn:hover {\n    background-color: #EDBE91;\n    cursor: pointer; }\n\n.bottom-header {\n  font-size: 0px;\n  height: 30px;\n  width: auto; }\n\nh3 {\n  color: #6D6E71;\n  display: inline-block;\n  font-size: 23px;\n  line-height: 1.3;\n  max-width: 300px;\n  max-height: 30px;\n  outline: none;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  width: 500px;\n  white-space: nowrap; }\n\n.changing-innertext {\n  white-space: pre-wrap; }\n\nh4 {\n  color: #6D6E71;\n  display: inline-block;\n  margin: 10px;\n  position: absolute;\n  bottom: -1px; }\n\nfooter {\n  margin-bottom: 30px;\n  position: relative; }\n\n.importance-change {\n  color: #6D6E71;\n  font-family: 'Open Sans', sans-serif; }\n\n.task-card {\n  border-bottom: solid thin #D1D3D4;\n  font-family: 'Roboto Slab', serif;\n  margin-bottom: 25px;\n  width: 500px; }\n\n.card-body {\n  color: #6D6E71;\n  font-family: 'Open Sans', sans-serif;\n  font-size: 18px;\n  letter-spacing: .5px;\n  line-height: 1.3;\n  margin: 20px 0;\n  outline: none;\n  width: 500px; }\n\n.destroy, .upvote, .downvote {\n  border: none;\n  color: none;\n  height: 30px;\n  width: 30px;\n  outline: none; }\n  .destroy:hover, .upvote:hover, .downvote:hover {\n    cursor: pointer; }\n\n.destroy {\n  background: url(" + __webpack_require__(7) + ");\n  float: right;\n  position: static; }\n  .destroy:hover {\n    background: url(" + __webpack_require__(8) + "); }\n\n.complete {\n  border-radius: 4px;\n  border: none;\n  background-color: #D1D3D4;\n  color: #000000;\n  font-family: 'Open Sans', sans-serif;\n  font-size: 14px;\n  float: right;\n  margin: 4px 7px 0 0;\n  outline: none; }\n  .complete:hover {\n    background-color: #EDBE91;\n    cursor: pointer; }\n\n.hide {\n  display: none; }\n\n.upvote {\n  background: url(" + __webpack_require__(9) + ");\n  margin-right: 10px; }\n  .upvote:hover {\n    background: url(" + __webpack_require__(10) + "); }\n\n.downvote {\n  background: url(" + __webpack_require__(11) + ");\n  margin: 0 20px 0 10px; }\n  .downvote:hover {\n    background: url(" + __webpack_require__(12) + "); }\n\n.strikethrough {\n  text-decoration: line-through; }\n\n@media screen and (max-width: 550px) {\n  .top-panel, .bottom-panel, .card-body {\n    width: 100%; }\n  h3, .idea-output, .save-btn-class, .search-class, #load-more, .task-title-class, .task-body-class, .task-card {\n    width: 300px; }\n  h3 {\n    max-width: 150px; }\n  .search-class {\n    margin: 40px 0 30px 0; }\n  .task-body-class {\n    height: 100px; } }\n", ""]);
 
 	// exports
 
@@ -10952,7 +10949,7 @@
 	Task.prototype.remove = function(id) {
 	  taskManager.remove(this.id);
 	  taskManager.hideCompletedTask();
-	  showloadMoreBtn();
+	  showLoadMoreBtn();
 	};
 
 	Task.prototype.upvote = function() {
@@ -10966,10 +10963,8 @@
 	  } else if (importance === 'high') {
 	    this.importance = 'critical';
 	  }
-	  taskManager.store();
-	  taskManager.render();
-	  taskManager.hideCompletedTask();
-	  showloadMoreBtn();
+	  updateTaskSection();
+	  showLoadMoreBtn();
 	};
 
 	Task.prototype.downvote = function() {
@@ -10983,10 +10978,8 @@
 	  } else if (importance === 'low') {
 	    this.importance = 'none';
 	  }
-	  taskManager.store();
-	  taskManager.render();
-	  taskManager.hideCompletedTask();
-	  showloadMoreBtn();
+	  updateTaskSection();
+	  showLoadMoreBtn();
 	};
 
 	Task.prototype.toggleState = function() {
@@ -11000,16 +10993,12 @@
 
 	Task.prototype.saveNewTitle = function (target) {
 	  this.title = target;
-	  taskManager.store();
-	  taskManager.render();
-	  taskManager.hideCompletedTask();
+	  updateTaskSection();
 	};
 
 	Task.prototype.saveNewBody = function (target) {
 	  this.body = target;
-	  taskManager.store();
-	  taskManager.render();
-	  taskManager.hideCompletedTask();
+	  updateTaskSection();
 	};
 
 	const taskManager = {
@@ -11034,13 +11023,13 @@
 	    if(sliced.length > 10) {
 	      sliced = sliced.splice(sliced.length-10 , sliced.length-1);
 	      for (let i = 0; i < sliced.length; i++) {
-	      task = sliced[i];
-	      taskSection.prepend(task.toHTML());
+	        let uncompletedTask = sliced[i];
+	        taskSection.prepend(uncompletedTask.toHTML());
 	      }
-	    } else {
+	      } else {
 	      for (let i = 0; i < sliced.length; i++) {
-	      task = sliced[i];
-	      taskSection.prepend(task.toHTML());
+	        let uncompletedTask = sliced[i];
+	        taskSection.prepend(uncompletedTask.toHTML());
 	      }
 	    }
 	  },
@@ -11104,9 +11093,15 @@
 	  }
 	}; //end of taskManager
 
-	function showloadMoreBtn() {
+	function showLoadMoreBtn() {
 	  $('#load-more').show();
 	  $('#load-more').html('Load More...');
+	}
+
+	function updateTaskSection() {
+	  taskManager.store();
+	  taskManager.render();
+	  taskManager.hideCompletedTask();
 	}
 
 	module.exports = Task;

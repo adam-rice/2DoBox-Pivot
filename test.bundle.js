@@ -464,107 +464,122 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var assert = __webpack_require__(23).assert;
-	var Idea = __webpack_require__(63);
+	var Task = __webpack_require__(63);
 
-	describe('Idea', function() {
+	describe('Task', function() {
 
 	  it('should be a function', function() {
-	    assert.isFunction(Idea);
+	    assert.isFunction(Task);
 	  });
 
-	  it('should instantiate our good friend, Idea', function() {
-	    var idea = new Idea();
-	    assert.isObject(idea);
+	  it('should instantiate our good friend, Task', function() {
+	    var task = new Task();
+	    assert.isObject(task);
 	  });
 
 	  it('should have a title', function() {
-	     var idea = new Idea('Whale');
-	     assert.equal(idea.title, 'Whale');
+	     var task = new Task('Whale');
+	     assert.equal(task.title, 'Whale');
 	  });
 
 	  it('should have a body', function() {
-	    var idea = new Idea('Whale', 'Is blue.');
-	    assert.equal(idea.body, 'Is blue.');
+	    var task = new Task('Whale', 'Is blue.');
+	    assert.equal(task.body, 'Is blue.');
 	  });
 
-	  it('should have a default quality of "swill"', function()  {
-	    var idea = new Idea('Whale', 'Is blue.');
-	    assert.equal(idea.quality, 'swill');
+	  it('should have a default importance of "normal"', function()  {
+	    var task = new Task('Whale', 'Is blue.');
+	    assert.equal(task.importance, 'normal');
 	  });
 
-	  it('should accept a quality if indicated', function()  {
-	    var idea = new Idea('Whale', 'Is blue.', 'genius');
-	    assert.equal(idea.quality, 'genius');
+	  it('should accept an importance if indicated', function()  {
+	    var task = new Task('Whale', 'Is blue.', 'genius');
+	    assert.equal(task.importance, 'genius');
 	  });
 
 	  it('should have a default id of Date.now()', function()  {
-	    var idea = new Idea('Whale', 'Is blue.');
-	    assert.equal(idea.id, Date.now());
+	    var task = new Task('Whale', 'Is blue.');
+	    assert.equal(task.id, Date.now());
 	  });
 
 	  it('should accept an id if provided', function()  {
-	    var idea = new Idea('Whale', 'Is blue.', 'genius', '556677');
+	    var idea = new Task('Whale', 'Is blue.', 'genius', false, '556677');
 	    assert.equal(idea.id, '556677');
 	  });
 
+	  it('should have a default completed status of false', function()  {
+	    var task = new Task('Whale', 'Is blue.');
+	    assert.equal(task.completed, false);
+	  });
+
+	  it('should accept a new completed status if indicated', function()  {
+	    var task = new Task('Whale', 'Is blue.', 'genius', true);
+	    assert.equal(task.completed, true);
+	  });
+
 	  it('toHTML should be a function', function() {
-	    var idea = new Idea();
+	    var idea = new Task();
 	    assert.isFunction(idea.toHTML);
 	  });
 
+	  it('completedToHTML should be a function', function() {
+	    var idea = new Task();
+	    assert.isFunction(idea.completedToHTML);
+	  });
+
 	  it('remove should be a function', function() {
-	    var idea = new Idea();
+	    var idea = new Task();
 	    assert.isFunction(idea.remove);
 	  });
 
 	  it('upvote should be a function', function() {
-	    var idea = new Idea();
+	    var idea = new Task();
 	    assert.isFunction(idea.upvote);
 	  });
 
-	  it('should up the quality if upvote is called', function () {
-	    var idea = new Idea('Whale', 'Is blue.', 'swill');
+	  it('should up the importance if upvote is called', function () {
+	    var idea = new Task('Whale', 'Is blue.', 'normal');
 	    idea.upvote();
-	    assert.equal(idea.quality, 'plausible');
+	    assert.equal(idea.importance, 'high');
 	    idea.upvote();
-	    assert.equal(idea.quality, 'genius');
+	    assert.equal(idea.importance, 'critical');
 	    idea.upvote();
-	    assert.equal(idea.quality, 'genius');
+	    assert.equal(idea.importance, 'critical');
 	  });
 
 	  it('downvote should be a function', function() {
-	    var idea = new Idea();
+	    var idea = new Task();
 	    assert.isFunction(idea.downvote);
 	  });
 
-	  it('should down the quality if downvote is called', function () {
-	    var idea = new Idea('Whale', 'Is blue.', 'genius');
+	  it('should down the importance if downvote is called', function () {
+	    var idea = new Task('Whale', 'Is blue.', 'normal');
 	    idea.downvote();
-	    assert.equal(idea.quality, 'plausible');
+	    assert.equal(idea.importance, 'low');
 	    idea.downvote();
-	    assert.equal(idea.quality, 'swill');
+	    assert.equal(idea.importance, 'none');
 	    idea.downvote();
-	    assert.equal(idea.quality, 'swill');
+	    assert.equal(idea.importance, 'none');
 	  });
 
 	  it('saveNewTitle should be a function', function() {
-	    var idea = new Idea();
+	    var idea = new Task();
 	    assert.isFunction(idea.saveNewTitle);
 	  });
 
 	  it('should replace the title if saveNewTitle is called', function() {
-	    var idea = new Idea('Whale');
+	    var idea = new Task('Whale');
 	    idea.saveNewTitle('Squid');
 	    assert.equal(idea.title, 'Squid');
 	  });
 
 	  it('saveNewBody should be a function', function() {
-	    var idea = new Idea();
+	    var idea = new Task();
 	    assert.isFunction(idea.saveNewBody);
 	  });
 
 	  it('should replace the body if saveNewBody is called', function() {
-	    var idea = new Idea('Whale', 'Is blue.');
+	    var idea = new Task('Whale', 'Is blue.');
 	    idea.saveNewBody('Likes to swim.');
 	    assert.equal(idea.body, 'Likes to swim.');
 	  });
@@ -8882,65 +8897,120 @@
 /* 63 */
 /***/ function(module, exports) {
 
-	function Idea(title, body, quality, id) {
+	/*jshint esversion: 6 */
+	function Task(title, body, importance, completed, id) {
 	  this.title = title;
 	  this.body = body;
-	  this.quality = quality || "swill";
+	  this.importance = importance || "normal";
 	  this.id = id || Date.now();
-	  }
+	  this.completed = completed || false;
+	}
 
-	  Idea.prototype.toHTML = function() {
+	Task.prototype.toHTML = function() {
+	  let completed = this.completed;
+	  if (completed === true) {
+	    completed = 'strikethrough';
+	  }
+	  return (`
+	    <li class="task-card ${this.completed}" id=${this.id}>
+	      <header class="bottom-header">
+	        <h3 contenteditable="true" class="${completed} ${this.completed}">${this.title}</h3>
+	        <button class="destroy">Delete</button>
+	        <button class="complete" name="complete">Complete</button>
+	      </header>
+	      <p contenteditable="true" class="card-body ${completed} ${this.completed}">${this.body}</p>
+	      <footer>
+	        <button class="upvote">upvote</button><button class="downvote">downvote</button>
+	        <h4 tabindex="0">
+	          importance:<span name="importance" class="importance-change" tabindex="0"> ${this.importance}</span>
+	        </h4>
+	      </footer>
+	    </li>
+	    `);
+	  };
+
+	  Task.prototype.completedToHTML = function() {
 	    return (`
-	      <li class="idea-card" id=${this.id}>
+	      <li class="task-card ${this.completed}" id=${this.id}>
 	        <header class="bottom-header">
-	        <button class="destroy-button"></button>
-	        <h3 contenteditable="true">${this.title}</h3>
+	          <h3 contenteditable="true" class="strikethrough ${this.completed}">${this.title}</h3>
+	          <button class="destroy">Delete</button>
 	        </header>
-	        <p class="body" contenteditable="true">${this.body}</p>
+	        <p contenteditable="true" class="card-body strikethrough ${this.completed}">${this.body}</p>
 	        <footer>
-	          <button id="upvote" class="upvote"></button>
-	          <button id="downvote" class="downvote"></button>
-	          <h4 class="quality">quality:<span class="quality-change"> ${this.quality}</span></h4>
+	          <button class="upvote">upvote</button><button class="downvote">downvote</button>
+	          <h4 tabindex="0">
+	            importance:<span name="importance" class="importance-change" tabindex="0"> ${this.importance}</span>
+	          </h4>
 	        </footer>
 	      </li>
 	      `);
 	    };
 
-	  Idea.prototype.remove = function(id) {
-	    ideaBoss.remove(this.id);
-	  };
+	Task.prototype.remove = function(id) {
+	  taskManager.remove(this.id);
+	  taskManager.hideCompletedTask();
+	  showloadMoreBtn();
+	};
 
-	  Idea.prototype.upvote = function() {
-	    var quality = this.quality;
-	    if (quality === 'swill') {
-	      this.quality = 'plausible';
-	    } else if (quality === 'plausible') {
-	      this.quality = 'genius';
-	    }
-	    // ideaBoss.store();
-	  };
+	Task.prototype.upvote = function() {
+	  let importance = this.importance;
+	  if (importance === 'none') {
+	    this.importance = 'low';
+	  } else if (importance === 'low') {
+	    this.importance = 'normal';
+	  } else if (importance === 'normal') {
+	    this.importance = 'high';
+	  } else if (importance === 'high') {
+	    this.importance = 'critical';
+	  }
+	  // taskManager.store();
+	  // taskManager.render();
+	  // taskManager.hideCompletedTask();
+	  // showloadMoreBtn();
+	};
 
-	  Idea.prototype.downvote = function() {
-	    var quality = this.quality;
-	    if (quality === 'genius') {
-	      this.quality = 'plausible';
-	    } else if (quality === 'plausible') {
-	      this.quality = 'swill';
-	    }
-	    // ideaBoss.store();
-	  };
+	Task.prototype.downvote = function() {
+	  let importance = this.importance;
+	  if (importance === 'critical') {
+	    this.importance = 'high';
+	  } else if (importance === 'high') {
+	    this.importance = 'normal';
+	  } else if (importance === 'normal') {
+	    this.importance = 'low';
+	  } else if (importance === 'low') {
+	    this.importance = 'none';
+	  }
+	  // taskManager.store();
+	  // taskManager.render();
+	  // taskManager.hideCompletedTask();
+	  // showloadMoreBtn();
+	};
 
-	  Idea.prototype.saveNewTitle = function (target) {
-	    this.title = target;
-	    // ideaBoss.store();
-	  };
+	Task.prototype.toggleState = function() {
+	  if (this.completed === false) {
+	    this.completed = true;
+	  } else if (this.completed === true) {
+	    this.completed = false;
+	  }
+	  // taskManager.store();
+	};
 
-	  Idea.prototype.saveNewBody = function (target) {
-	    this.body = target;
-	    // ideaBoss.store();
-	  };
+	Task.prototype.saveNewTitle = function (target) {
+	  this.title = target;
+	  // taskManager.store();
+	  // taskManager.render();
+	  // taskManager.hideCompletedTask();
+	};
 
-	module.exports = Idea;
+	Task.prototype.saveNewBody = function (target) {
+	  this.body = target;
+	  // taskManager.store();
+	  // taskManager.render();
+	  // taskManager.hideCompletedTask();
+	};
+
+	module.exports = Task;
 
 
 /***/ },
